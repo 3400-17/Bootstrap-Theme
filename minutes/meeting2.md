@@ -5,7 +5,9 @@ tbd
 ### Agenda
 * Website
   * Pick a theme
-  * Bio's for everyone?
+  * Decide on bio's?
 * Github setup for code sharing
 
 ### Minutes
+* Chose a Bootstrap theme.
+* Also started working on Milestone 1.
