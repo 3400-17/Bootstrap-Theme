@@ -93,9 +93,7 @@ void forward() {
 ### Algorithm
 The first step we needed to take in implementing a figure 8 was being able to detect a junction.  This was done by adding a new case to the code above.  When both sensors sense a line beneath them, that means the robot is at a junction.
 
-The next step was determining 
-
-The algorithm for running a figure 8 was modeled with the diagram below.  If we use a state variable to keep track of where on the 8 the robot currently is, we can know what the next move at a junction needs to be. Looking at the diagram we can see that the robot first needs to turn right three times, then go straight, then turn left three times, then go straight, and repeat.  Each time the robot comes to an intersection, it will do the required action and then increase state by 1.  When state reaches 9, it can then be reset back to 1.  The states are as follows:
+The next step was determining how to act when the robot reached a junction.  To do this, we used a state algorithm modeled with the diagram below.  If we use a state variable to keep track of where on the 8 the robot currently is, we can know what the next move at a junction needs to be. Looking at the diagram we can see that the robot first needs to turn right three times, then go straight, then turn left three times, then go straight, and repeat.  Each time the robot comes to an intersection, it will do the required action and then increase state by 1.  When state reaches 9, it can then be reset back to 1.  The states are as follows:
 
 1. right
 2. right
