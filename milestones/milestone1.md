@@ -91,5 +91,25 @@ void forward() {
 ## Figure 8
 
 ### Algorithm
+The first step we needed to take in implementing a figure 8 was being able to detect a junction.  This was done by adding a new case to the code above.  When both sensors sense a line beneath them, that means the robot is at a junction.
+
+The next step was determining 
+
+The algorithm for running a figure 8 was modeled with the diagram below.  If we use a state variable to keep track of where on the 8 the robot currently is, we can know what the next move at a junction needs to be. Looking at the diagram we can see that the robot first needs to turn right three times, then go straight, then turn left three times, then go straight, and repeat.  Each time the robot comes to an intersection, it will do the required action and then increase state by 1.  When state reaches 9, it can then be reset back to 1.  The states are as follows:
+
+1. right
+2. right
+3. right
+4. straight
+5. left
+6. left
+7. left
+8. straight
+
 ![Figure 8 States](https://snag.gy/VLftHg.jpg)
+
+Our first attempts with turning were simply using a delay.  If we could have the robot turn 90 degrees exactly while being uninterrupted, then the robot would have "latched on" to a perpendicular line. 
+
 ### Code
+
+### Video
