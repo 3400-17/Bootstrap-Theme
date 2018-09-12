@@ -20,7 +20,7 @@ However, we thought that this difference bewteen black and white was not large e
 One other problem we had with our robot was the servos.  We were comparing our speed of travel to other teams' robots and ours was running signficantly slower.  We first thought it was a servo issue and we tried other servos, encountering similar results.  Next, we talked to a TA who mentioned that the current limit of the Arduino might be limiting the power to the motors.  To solve this problem, we routed the leads from our battery directly into the breadboard rails rather than into the Arduino.  This way, the Arduino was powered through the rails and the motors and sensors could draw needed current directly from the battery rather than through the Arduino.  This fixed our power problem.
 
 ### Algorithm
-**insert diagram here**
+![line following algorithm](https://snag.gy/wWkfDB.jpg)
 
 The algorithm for line following is not complicated.  There are three cases:
 
