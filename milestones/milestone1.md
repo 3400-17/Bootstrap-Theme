@@ -91,5 +91,5 @@ void forward() {
 ## Figure 8
 
 ### Algorithm
-![Figure 8 States](https://snag.gy/KzUfb1.jpg)
+![Figure 8 States](https://snag.gy/VLftHg.jpg)
 ### Code
