@@ -110,5 +110,73 @@ The next step was determining how to act when the robot reached a junction.  To 
 Our first attempts with turning were simply using a delay.  If we could have the robot turn 90 degrees exactly while being uninterrupted, then the robot would have "latched on" to a perpendicular line. 
 
 ### Code
+#include <Servo.h>
+Servo left;
+Servo right; 
+
+const int leftOut = A0;
+const int rightOut = A1;
+int leftOutValue=0;
+int rightOutValue=0;
+int counter = 0;
+
+void setup() {
+  left.attach(10);
+  right.attach(11);  
+  Serial.begin(9600);
+  
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  leftOutValue = map(analogRead(leftOut), 0, 1023, 0, 255);
+  rightOutValue = map(analogRead(rightOut), 0, 1023, 0, 255);
+   //black is high, white is low
+   
+  if (leftOutValue < 190 && rightOutValue < 190){
+    if (counter < 4){
+      left.write(100);
+      right.write(90);
+      delay(1460);
+      counter = counter + 1;
+    }else{
+      left.write(90);
+      right.write(80);
+      delay(1460);
+      counter = counter + 1;
+      if (counter == 8){
+        counter = 0;
+      }
+    }  
+  }
+  if (leftOutValue < 190 ){
+    left.write(100);
+    right.write(90);
+  }else if(rightOutValue < 190){
+    left.write(90);
+    right.write(80);
+  }else{
+    forward();
+  }
+  delay(10);
+  
+}
+
+void forward() {
+  left.write(180);
+  right.write(0);
+  
+}
+
+void back() {
+  right.write(95);
+  left.write(85);
+  
+}
+
+void turn() {
+  right.write(95);
+  left.write(95);
+}
 
 ### Video
