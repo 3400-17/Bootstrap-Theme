@@ -176,6 +176,12 @@ void forward() {
 
 ~~~
 ### Video
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/o3cih4OgYb0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+Here is a video of our robot following a straight line.
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4iOya06wi0Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 Here is a video of our robot moving in figure 8. 
