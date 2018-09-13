@@ -110,6 +110,7 @@ The next step was determining how to act when the robot reached a junction.  To 
 Our first attempts with turning were simply using a delay.  If we could have the robot turn 90 degrees exactly while being uninterrupted, then the robot would have "latched on" to a perpendicular line. 
 
 ### Code
+~~~
 #include <Servo.h>
 Servo left;
 Servo right; 
@@ -133,26 +134,27 @@ void loop() {
   rightOutValue = map(analogRead(rightOut), 0, 1023, 0, 255);
    //black is high, white is low
    
-  if (leftOutValue < 190 && rightOutValue < 190){
-    if (counter < 4){
+  if (leftOutValue < 190 && rightOutValue < 190){ //when encounter cross
+    if (counter < 4){ //the first four stages turn left
       left.write(100);
       right.write(90);
       delay(1460);
       counter = counter + 1;
-    }else{
+    }else{ //the next four stages turn right
       left.write(90);
       right.write(80);
-      delay(1460);
+      delay(1460); // a random number Natan came up with for delay
       counter = counter + 1;
       if (counter == 8){
-        counter = 0;
+        counter = 0; 
+        //after eight stages, the robot is resetted to the first stage
       }
     }  
   }
-  if (leftOutValue < 190 ){
+  if (leftOutValue < 190 ){ //only left sensor senses the line, robot heads to the right
     left.write(100);
     right.write(90);
-  }else if(rightOutValue < 190){
+  }else if(rightOutValue < 190){ //only right sensor senses the line, robot heads to the left
     left.write(90);
     right.write(80);
   }else{
@@ -178,5 +180,7 @@ void turn() {
   right.write(95);
   left.write(95);
 }
-
+~~~
 ### Video
+<iframe width="560" height="315" src="https://youtu.be/4iOya06wi0Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
