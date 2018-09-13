@@ -10,7 +10,7 @@ The goal of milestone 1 was to have our robot be able to follow a line and also 
 
 In order to implement line following, the first step would be to add sensors to detect the line.  We used the provided IR line sensors and attached two the the front of our robot.  
 
-We chose to have two sensors at the front of the robot to read either side of the line as the robot traveled.  This way, the sensors could tell immediately if the robot was off course.  When experimenting with the readings of the line sesnsor, we used the InOutSerial example provided by Arduino.  After mapping the reading to a 0 to 255 scale, we found that white was **value** and black was **value**.
+We chose to have two sensors at the front of the robot to read either side of the line as the robot traveled.  This way, the sensors could tell immediately if the robot was off course.  When experimenting with the readings of the line sesnsor, we used the InOutSerial example provided by Arduino.  After mapping the reading to a 0 to 255 scale, we found that white was 180 and black was 230.
 
 However, we thought that this difference bewteen black and white was not large enough.  Our solution was to move the sensors closer to the ground.  We were careful to have the sensors as close as possible without interfering with movement in order to have good measurements.  This yielded much better readings with black being 200 and white being 90. 
 
@@ -96,16 +96,16 @@ The first step we needed to take in implementing a figure 8 was being able to de
 
 The next step was determining how to act when the robot reached a junction.  To do this, we used a state algorithm modeled with the diagram below.  If we use a state variable to keep track of where on the 8 the robot currently is, we can know what the next move at a junction needs to be. Looking at the diagram we can see that the robot first needs to turn right three times, then go straight, then turn left three times, then go straight, and repeat.  Each time the robot comes to an intersection, it will do the required action and then increase state by 1.  When state reaches 9, it can then be reset back to 1.  The states are as follows:
 
-1. right
-2. right
-3. right
-4. straight
-5. left
-6. left
-7. left
-8. straight
+1. left
+2. left
+3. left
+4. left
+5. right
+6. right
+7. right
+8. right
 
-![Figure 8 States](https://snag.gy/VLftHg.jpg)
+![Figure 8 States](https://snag.gy/GOX8al.jpg)
 
 Our first attempts with turning were simply using a delay.  If we could have the robot turn 90 degrees exactly while being uninterrupted, then the robot would have "latched on" to a perpendicular line. 
 
