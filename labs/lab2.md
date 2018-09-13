@@ -45,8 +45,7 @@ We generated a 660Hz tone, and measured the output from the microphone using wit
 
 Objective: be able to detect 12kHz IR beacon with an Arduino using the FFT library. 
 
-We first looked up the phototransistor from [this link.] (http://www.mouser.com/ds/2/414/OP593-598-6739.pdf)
-
+We first looked up the phototransistor (OP598A) datasheet. 
 ## Measuring the frequency output of the treasure
 
 **unit test**
