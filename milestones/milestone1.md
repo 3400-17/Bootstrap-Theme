@@ -6,7 +6,7 @@ The goal of milestone 1 was to have our robot be able to follow a line and also 
 ## Following a Line
 ### Hardware Modifications
 #### Adddition of Line Sensors
-![sensor] (Fig 1.jpg "sensor")
+![sensor] (https://drive.google.com/file/d/1yRF7MCvDOpVeYug2E-acs1wvOU_jIvBC/view?usp=sharing)
 
 In order to implement line following, the first step would be to add sensors to detect the line.  We used the provided IR line sensors and attached two the the front of our robot.  
 
