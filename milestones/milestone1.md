@@ -6,16 +6,17 @@ The goal of milestone 1 was to have our robot be able to follow a line and also 
 ## Following a Line
 ### Hardware Modifications
 #### Adddition of Line Sensors
-<img src="https://drive.google.com/file/d/1yRF7MCvDOpVeYug2E-acs1wvOU_jIvBC/view?usp=sharing">
+<img src="https://snag.gy/Tgkhm4.jpg">
 
 In order to implement line following, the first step would be to add sensors to detect the line.  We used the provided IR line sensors and attached two the the front of our robot.  
 
 We chose to have two sensors at the front of the robot to read either side of the line as the robot traveled.  This way, the sensors could tell immediately if the robot was off course.  When experimenting with the readings of the line sesnsor, we used the InOutSerial example provided by Arduino.  After mapping the reading to a 0 to 255 scale, we found that white was **value** and black was **value**.
 
-However, we thought that this difference bewteen black and white was not large enough.  Our solution was to move the sensors closer to the ground.  We were careful to have the sensors as close as possible without interfering with movement in order to have good measurements.  This yielded much better readings with black being **value** and white being **value**. 
+However, we thought that this difference bewteen black and white was not large enough.  Our solution was to move the sensors closer to the ground.  We were careful to have the sensors as close as possible without interfering with movement in order to have good measurements.  This yielded much better readings with black being 200 and white being 90. 
 
 #### Power Systems Modification
 **insert picture here**
+<img src="https://snag.gy/wQ9E5b.jpg">
 
 One other problem we had with our robot was the servos.  We were comparing our speed of travel to other teams' robots and ours was running signficantly slower.  We first thought it was a servo issue and we tried other servos, encountering similar results.  Next, we talked to a TA who mentioned that the current limit of the Arduino might be limiting the power to the motors.  To solve this problem, we routed the leads from our battery directly into the breadboard rails rather than into the Arduino.  This way, the Arduino was powered through the rails and the motors and sensors could draw needed current directly from the battery rather than through the Arduino.  This fixed our power problem.
 
