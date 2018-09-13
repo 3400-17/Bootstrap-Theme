@@ -6,7 +6,7 @@ The goal of milestone 1 was to have our robot be able to follow a line and also 
 ## Following a Line
 ### Hardware Modifications
 #### Adddition of Line Sensors
-<img src="https://snag.gy/Tgkhm4.jpg">
+![Line sensors](https://snag.gy/iVm4ZR.jpg)
 
 In order to implement line following, the first step would be to add sensors to detect the line.  We used the provided IR line sensors and attached two the the front of our robot.  
 
@@ -15,8 +15,7 @@ We chose to have two sensors at the front of the robot to read either side of th
 However, we thought that this difference bewteen black and white was not large enough.  Our solution was to move the sensors closer to the ground.  We were careful to have the sensors as close as possible without interfering with movement in order to have good measurements.  This yielded much better readings with black being 200 and white being 90. 
 
 #### Power Systems Modification
-
-<img src="https://snag.gy/cnLdbg.jpg">
+![New power setup](https://snag.gy/57RWCb.jpg)
 
 One other problem we had with our robot was the servos.  We were comparing our speed of travel to other teams' robots and ours was running signficantly slower.  We first thought it was a servo issue and we tried other servos, encountering similar results.  Next, we talked to a TA who mentioned that the current limit of the Arduino might be limiting the power to the motors.  To solve this problem, we routed the leads from our battery directly into the breadboard rails rather than into the Arduino.  This way, the Arduino was powered through the rails and the motors and sensors could draw needed current directly from the battery rather than through the Arduino.  This fixed our power problem.
 
@@ -94,20 +93,22 @@ void forward() {
 ### Algorithm
 The first step we needed to take in implementing a figure 8 was being able to detect a junction.  This was done by adding a new case to the code above.  When both sensors sense a line beneath them, that means the robot is at a junction.
 
-The next step was determining how to act when the robot reached a junction.  To do this, we used a state algorithm modeled with the diagram below.  If we use a state variable to keep track of where on the 8 the robot currently is, we can know what the next move at a junction needs to be. Looking at the diagram we can see that the robot first needs to turn right three times, then go straight, then turn left three times, then go straight, and repeat.  Each time the robot comes to an intersection, it will do the required action and then increase state by 1.  When state reaches 9, it can then be reset back to 1.  The states are as follows:
+The next step was determining how to act when the robot reached a junction.  To do this, we used a state algorithm modeled with the diagram below.  If we use a state variable to keep track of where on the 8 the robot currently is, we can know what the next move at a junction needs to be. 
 
-1. left
-2. left
-3. left
-4. left
-5. right
-6. right
-7. right
-8. right
+Looking at the diagram we can see that the robot first needs to turn right four times, turn left four timees, and repeat.  Each time the robot comes to an intersection, it will do the required action and then increase state by 1.  When state reaches 9, it can then be reset back to 1.  The states are as follows:
+
+1. right
+2. right
+3. right
+4. right
+5. left
+6. left
+7. left
+8. left
 
 ![Figure 8 States](https://snag.gy/GOX8al.jpg)
 
-Our first attempts with turning were simply using a delay.  If we could have the robot turn 90 degrees exactly while being uninterrupted, then the robot would have "latched on" to a perpendicular line. 
+Our first attempts with turning were simply using a delay.  If we could have the robot turn 90 degrees exactly while being uninterrupted, then the robot would have "latched on" to a perpendicular line.  To improve upon this we instead set it to turn until the opposing sensor hit the new perpendicular line.  This ensured that the robot would always keep the line between the sensors, even after turning.
 
 ### Code
 ~~~
@@ -134,27 +135,30 @@ void loop() {
   rightOutValue = map(analogRead(rightOut), 0, 1023, 0, 255);
    //black is high, white is low
    
-  if (leftOutValue < 190 && rightOutValue < 190){ //when encounter cross
-    if (counter < 4){ //the first four stages turn left
+  if (leftOutValue < 190 && rightOutValue < 190){
+    if (counter < 4){
       left.write(100);
       right.write(90);
-      delay(1460);
+      delay(1000);
+      while(leftOutValue > 190);
+      
       counter = counter + 1;
-    }else{ //the next four stages turn right
+    }else{
       left.write(90);
       right.write(80);
-      delay(1460); // a random number Natan came up with for delay
+      delay(1000);
+      while(rightOutValue > 190);
+      
       counter = counter + 1;
       if (counter == 8){
-        counter = 0; 
-        //after eight stages, the robot is resetted to the first stage
+        counter = 0;
       }
     }  
   }
-  if (leftOutValue < 190 ){ //only left sensor senses the line, robot heads to the right
+  if (leftOutValue < 190 ){
     left.write(100);
     right.write(90);
-  }else if(rightOutValue < 190){ //only right sensor senses the line, robot heads to the left
+  }else if(rightOutValue < 190){
     left.write(90);
     right.write(80);
   }else{
@@ -170,25 +174,8 @@ void forward() {
   
 }
 
-void back() {
-  right.write(95);
-  left.write(85);
-  
-}
-
-void turn() {
-  right.write(95);
-  left.write(95);
-}
 ~~~
 ### Video
-
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/o3cih4OgYb0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-Here is a video of our robot following a straight line.
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4iOya06wi0Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 Here is a video of our robot moving in figure 8. 
-
