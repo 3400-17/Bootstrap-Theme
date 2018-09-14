@@ -69,6 +69,7 @@ Everyone
   * split teams
     * Audio Team: Natan, Siming, and Marcela
     * Optical Team: Zoe and Michael
+* looked up puns for website
   
 
 
