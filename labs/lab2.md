@@ -147,9 +147,7 @@ void loop() {
 ~~~
 
 ## Video
-<iframe width="560" height="315" src="https://youtu.be/jbmFh3Tk_WQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-https://www.youtube.com/watch?v=jbmFh3Tk_WQ&feature=youtu.be
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jbmFh3Tk_WQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 As seen from the video, the red LED only lights up when exposed to the 6.08 kHz light.  The 18 kHz does not trigger the light.
 
