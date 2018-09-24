@@ -150,6 +150,7 @@ void loop() {
 ## Video
 <iframe width="560" height="315" src="https://youtu.be/jbmFh3Tk_WQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
+https://www.youtube.com/watch?v=jbmFh3Tk_WQ&feature=youtu.be
 
 ## Merging our systems
 
