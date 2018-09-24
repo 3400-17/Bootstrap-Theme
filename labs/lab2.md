@@ -1,6 +1,8 @@
 # Lab 2: Analog CIrcuitry and FFTs
 ## Teams
+
 **Team 1**: (acoustic) Natan, Siming, and Marcela
+
 **Team 2**: (optical) Michael and Zoe
 
 ### Objectives
@@ -15,14 +17,11 @@
 
 ## Internal Blink
 
-
-
 We downloaded the newer FFT library from [this link.](http://wiki.openmusiclabs.com/wiki/ArduinoFFT)
 
 After moving the FFT library folder inside Arduino libraries, we used the sample sketch to start coding. The input values from Analog Pin 0 was **value**, and the output frequency magnitude was **value**. 
 
 For unit testing, we set up a signal denerator to deliver a signal to match what we epxected to see. We noticed that the frequency output from the signal generator matched with what we saw on the serial monitor, which was **value**. 
-
 
 ## Acoustic Team: Assemble your microphone circuit
 
