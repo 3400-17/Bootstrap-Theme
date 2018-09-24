@@ -1,4 +1,4 @@
-# Lab 2: Analog CIrcuitry and FFTs
+# Lab 2: Analog Circuitry and FFTs
 ## Teams
 
 **Team 1**: (acoustic) Natan, Siming, and Marcela
