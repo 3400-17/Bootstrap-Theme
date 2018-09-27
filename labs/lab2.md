@@ -159,6 +159,8 @@ As seen from the video, the red LED only lights up when exposed to the 6.08 kHz 
 
 # Merging our systems
 
+![Audio and optical combined](https://snag.gy/jcfQ89.jpg)
+
 ## Code
 
 ```
@@ -215,3 +217,4 @@ void loop() {
 ```
 
 ## Video
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0Fe6iOKhANM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
