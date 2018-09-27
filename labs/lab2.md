@@ -76,9 +76,9 @@ An FFT is a quick way to convert data from the time domain to the frequency doma
 
 We then took data measurements for both the 6.08 kHz and the 18 kHz signal as shown in the plot below:
 
-** Insert image of FFT here ** 
+![FFT of signals](https://snag.gy/MrQKmy.jpg)
 
-## Active Filter and Amplifier
+## Active Filter
 As seen in the FFT, there are a lot of spurious frequencies that can be filtered out in order to make the 6.08 kHz signal more visible.  To do this, we implemented an active Chebyshev bandpass filter.  To design the filter, we used changpuak.ch and chose to filter between 4 kHz and 8 kHz.  The resulting circuit is shown below.
 
 ![Chebyshev Bandpass Filter](https://snag.gy/Wm1lCh.jpg)
@@ -87,9 +87,15 @@ To test our filter, we used a function generator to generate a 18 kHz and 6 kHz 
 
 ![18 kHz input vs 6 kHz input](https://snag.gy/k9dGcC.jpg)
 
-The main problem with our filter was the fact that it decreased the amplitude of the signal significantly as well.  As seen in the picture, a 4 V peak to peak was input with the signal generator but only a 1.44 V output was received.  To make the signal easier to detect, we built a noninverting amplifier as shown below with values of R1 = 4.7 kOhm and R2 = 1 kOhm, yielding a gain of 5.7.  We tested our amplifier with the signal generator as well and it worked well. 
+We also used the FFT to serial code to gather FFT data of our signals after the filter.
+![FFT after filter](https://snag.gy/9hYcCz.jpg)
+
+## Amplifier
+The main problem with our filter was the fact that it decreased the amplitude of the signal significantly as well.  As seen in the picture, a 4 V peak to peak was input with the signal generator but only a 1.44 V output was received.  When we are trying to sense with the IR phototransistor, some of these signals can be as small as 50 mV.  
 
 ![Non Inverting Amplifier](https://www.researchgate.net/profile/Muhammad_Jamal18/publication/300239554/figure/fig21/AS:592793923751944@1518344493378/A-Non-Inverting-Amplifier.png)
+
+To make the signal easier to detect, we built a noninverting amplifier as shown below with values of R1 = 4.7 kOhm and R2 = 1 kOhm, yielding a gain of 5.7.  We tested our amplifier with the signal generator as well and it worked well. 
 
 One difficulty we ran into was using the op amp.  We found that the 358 model was more effective because it was compatible with the ground and 5V without having to step everything to 2.5 V to create a +2.5V and -2.5V rail for the 353 op amp model.
 
