@@ -192,11 +192,6 @@ void loop() {
     } else {
       digitalWrite(3, LOW);  
     }
-    
-//    Serial.println("start");
-//    for (byte i = 0 ; i < FFT_N/2 ; i++) {
-//      Serial.println(fft_log_out[i]);
-//    }
 
     //optical 
     for (int i = 0 ; i < 512 ; i += 2) {
@@ -209,14 +204,15 @@ void loop() {
     fft_run();
     fft_mag_log();
     sei();
-    if (fft_log_out[86]>10 ){ //&& fft_log_out[86]<fft_log_out[320]
+    if (fft_log_out[86]>10 ){
       digitalWrite(2, HIGH);    
     }else{
       digitalWrite(2, LOW);    
     }    
   }
 }
+
 ˜˜˜
-      ADCSRA = 0xf5; // restart adc
+
 
 ## Video
