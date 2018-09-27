@@ -161,7 +161,7 @@ As seen from the video, the red LED only lights up when exposed to the 6.08 kHz 
 
 ## Code
 
-˜˜˜
+```
 #define LOG_OUT 1 // use the log output function
 #define FFT_N 256 // set to 256 point fft
 
@@ -178,7 +178,7 @@ void loop() {
   while(1) {
     cli();
     for (int i = 0 ; i < 512 ; i += 2) {
-      fft_input[i] = analogRead(A2); // <-- NOTE THIS LINE
+      fft_input[i] = analogRead(A2); //
       fft_input[i+1] = 0;
     }
     fft_window();
@@ -195,7 +195,7 @@ void loop() {
 
     //optical 
     for (int i = 0 ; i < 512 ; i += 2) {
-      fft_input[i] = analogRead(A3); // <-- NOTE THIS LINE
+      fft_input[i] = analogRead(A3);
       fft_input[i+1] = 0;
     }
 
