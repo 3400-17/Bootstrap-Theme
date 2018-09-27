@@ -5,17 +5,17 @@
 
 **Team 2**: (optical) Michael and Zoe
 
-### Objectives
+## Objectives
 
 * Learn how to make analog circuits and digital filter to interface with Arduino
 * Use a microphone to detect whistle blow
 * Use additional microphone to capture inputs from an IR sensor
 
 
+# Acoustic Team
 
 
-
-## Internal Blink
+### FFT library
 
 We downloaded the newer FFT library from [this link.](http://wiki.openmusiclabs.com/wiki/ArduinoFFT)
 
@@ -23,7 +23,7 @@ After moving the FFT library folder inside Arduino libraries, we used the sample
 
 For unit testing, we set up a signal denerator to deliver a signal to match what we epxected to see. We noticed that the frequency output from the signal generator matched with what we saw on the serial monitor, which was **value**. 
 
-## Acoustic Team: Assemble your microphone circuit
+### Microphone circuit
 
 The basic circuit for the electret microphone was the follows. 
 
@@ -31,16 +31,16 @@ The basic circuit for the electret microphone was the follows.
 
 We generated a 660Hz tone, and measured the output from the microphone using with oscilloscope. 
 
-## Addition circuitry
+### Addition circuitry
 
 **unit tests**
 
 **insert pictures**
 
-## Override Button
+### Override Button
 
 
-## Optical Team
+# Optical Team
 
 Michael Xiao and Zoe Du
 
@@ -69,7 +69,7 @@ We then attached the Vout signal to the Arduino A0 pin through a 300 ohm resisto
 
 Note that the frequency of the signal is a bit higher than the nominal 6.08 kHz at 6.263 kHz.  Also the peak to peak voltage is skewed because we used a different scale factor on our scope cable. 
 
-## FFT 
+### FFT 
 To analyze the data captured from the IR and capture the frequency, we utilized a fast fourier transform (FFT) on the Arduino.  This required a new library from Open Music Labs.  We utilized the Analog to digital converter (ADC) rather than using the analogRead command because it runs faster and performs better.  
 
 An FFT is a quick way to convert data from the time domain to the frequency domain.  The example fft_adc_serial script provided a great starting point as it output data into the serial that we could read and analyze.  The first step we took was finding the bin size of the output data.  The bin size is the size of each step on the frequency scale outputted by the Arduino.  We tested this by using the known 18 kHz signal and looking at the output data.  The peak was at bin number 121, meaning that the bin size is approximately 18000/121 = 148 Hz.  This means that we should expect to see the 6.08 kHz signal at around bin number 42.
@@ -78,7 +78,7 @@ We then took data measurements for both the 6.08 kHz and the 18 kHz signal as sh
 
 ![FFT of signals](https://snag.gy/MrQKmy.jpg)
 
-## Active Filter
+### Active Filter
 As seen in the FFT, there are a lot of spurious frequencies that can be filtered out in order to make the 6.08 kHz signal more visible.  To do this, we implemented an active Chebyshev bandpass filter.  To design the filter, we used changpuak.ch and chose to filter between 4 kHz and 8 kHz.  The resulting circuit is shown below.
 
 ![Chebyshev Bandpass Filter](https://snag.gy/Wm1lCh.jpg)
@@ -90,7 +90,7 @@ To test our filter, we used a function generator to generate a 18 kHz and 6 kHz 
 We also used the FFT to serial code to gather FFT data of our signals after the filter.
 ![FFT after filter](https://snag.gy/9hYcCz.jpg)
 
-## Amplifier
+### Amplifier
 The main problem with our filter was the fact that it decreased the amplitude of the signal significantly as well.  As seen in the picture, a 4 V peak to peak was input with the signal generator but only a 1.44 V output was received.  When we are trying to sense with the IR phototransistor, some of these signals can be as small as 50 mV.  
 
 ![Non Inverting Amplifier](https://www.researchgate.net/profile/Muhammad_Jamal18/publication/300239554/figure/fig21/AS:592793923751944@1518344493378/A-Non-Inverting-Amplifier.png)
@@ -103,10 +103,10 @@ Here is out implementation of of the filter, amplifier, and the phototransistor 
 
 ![Optical Circuitry](https://snag.gy/XHY5EP.jpg)
 
-## Distinguishing signals
+### Distinguishing signals
 We found that the best way to distinguish the 6.08 kHz and 18 kHz signals was through code.  We first do a check on the bin corresponding to our 6.08 kHz hat (bin number 43) to see if it is above a certain threshold.  Then we do a check on the 18 kHz FFT to see if bin number 160 is greater than bin number 43.  If this is the case, an LED is lit up connected to pin 2.  
 
-## Code
+### Code
 
 ~~~
 #define LOG_OUT 1 // use the log output function
@@ -152,16 +152,17 @@ void loop() {
 
 ~~~
 
-## Video
+### Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jbmFh3Tk_WQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 As seen from the video, the red LED only lights up when exposed to the 6.08 kHz light.  The 18 kHz does not trigger the light.
 
 # Merging our systems
+After getting both of our systems working, we connected our breadboards together and modified our code to use different analog and digital pins.  Our setup is shown below.  When a 660 kHz sound is played, the red LED lights up and when a 6.08 kHz IR light is detected, the yellow LED lights up.
 
 ![Audio and optical combined](https://snag.gy/jcfQ89.jpg)
 
-## Code
+### Code
 
 ```
 #define LOG_OUT 1 // use the log output function
@@ -180,7 +181,7 @@ void loop() {
   while(1) {
     cli();
     for (int i = 0 ; i < 512 ; i += 2) {
-      fft_input[i] = analogRead(A2); //
+      fft_input[i] = analogRead(A2); //read from microphone
       fft_input[i+1] = 0;
     }
     fft_window();
@@ -189,7 +190,7 @@ void loop() {
     fft_mag_log();
     sei();
 
-    if (fft_log_out[20] > 40){
+    if (fft_log_out[20] > 40){ //threshold on microphone
       digitalWrite(3, HIGH);  
     } else {
       digitalWrite(3, LOW);  
@@ -197,7 +198,7 @@ void loop() {
 
     //optical 
     for (int i = 0 ; i < 512 ; i += 2) {
-      fft_input[i] = analogRead(A3);
+      fft_input[i] = analogRead(A3); //read from IR sensor
       fft_input[i+1] = 0;
     }
 
@@ -206,7 +207,7 @@ void loop() {
     fft_run();
     fft_mag_log();
     sei();
-    if (fft_log_out[86]>10 ){
+    if (fft_log_out[86]>10 ){ //check threshold
       digitalWrite(2, HIGH);    
     }else{
       digitalWrite(2, LOW);    
@@ -216,5 +217,5 @@ void loop() {
 
 ```
 
-## Video
+### Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0Fe6iOKhANM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
