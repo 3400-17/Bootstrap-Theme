@@ -157,5 +157,66 @@ void loop() {
 
 As seen from the video, the red LED only lights up when exposed to the 6.08 kHz light.  The 18 kHz does not trigger the light.
 
-## Merging our systems
+# Merging our systems
 
+## Code
+
+˜˜˜
+#define LOG_OUT 1 // use the log output function
+#define FFT_N 256 // set to 256 point fft
+
+#include <FFT.h> // include the library
+
+void setup() {
+  Serial.begin(115200); // use the serial port
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+
+}
+
+void loop() {
+  while(1) {
+    cli();
+    for (int i = 0 ; i < 512 ; i += 2) {
+      fft_input[i] = analogRead(A2); // <-- NOTE THIS LINE
+      fft_input[i+1] = 0;
+    }
+    fft_window();
+    fft_reorder();
+    fft_run();
+    fft_mag_log();
+    sei();
+
+    if (fft_log_out[20] > 40){
+      digitalWrite(3, HIGH);  
+    } else {
+      digitalWrite(3, LOW);  
+    }
+    
+//    Serial.println("start");
+//    for (byte i = 0 ; i < FFT_N/2 ; i++) {
+//      Serial.println(fft_log_out[i]);
+//    }
+
+    //optical 
+    for (int i = 0 ; i < 512 ; i += 2) {
+      fft_input[i] = analogRead(A3); // <-- NOTE THIS LINE
+      fft_input[i+1] = 0;
+    }
+
+    fft_window();
+    fft_reorder();
+    fft_run();
+    fft_mag_log();
+    sei();
+    if (fft_log_out[86]>10 ){ //&& fft_log_out[86]<fft_log_out[320]
+      digitalWrite(2, HIGH);    
+    }else{
+      digitalWrite(2, LOW);    
+    }    
+  }
+}
+˜˜˜
+      ADCSRA = 0xf5; // restart adc
+
+## Video
