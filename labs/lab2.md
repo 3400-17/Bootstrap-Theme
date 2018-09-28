@@ -9,19 +9,22 @@
 
 * Learn how to make analog circuits and digital filter to interface with Arduino
 * Use a microphone to detect whistle blow
-* Use additional microphone to capture inputs from an IR sensor
-
+* Use additional sensor to capture inputs from an IR hat
 
 # Acoustic Team
+Marcela, Natan, & Siming
 
+### Materials Used
+* breadboard
+* wires
+* Arduino
+* Electret microphone
+* 1 uF capacitor
+* 300 Ohm resistor
+* 3 kOhm resistor
 
-### FFT library
-
-We downloaded the newer FFT library from [this link.](http://wiki.openmusiclabs.com/wiki/ArduinoFFT)
-
-After moving the FFT library folder inside Arduino libraries, we used the sample sketch to start coding. The input values from Analog Pin 0 was **value**, and the output frequency magnitude was **value**. 
-
-For unit testing, we set up a signal denerator to deliver a signal to match what we epxected to see. We noticed that the frequency output from the signal generator matched with what we saw on the serial monitor, which was **value**. 
+### Goals
+The goal of the Acoustic team was to use a microphone to detect a 660 Hz sound.  This sound signals the robot to start in the competition.
 
 ### Microphone circuit
 
@@ -31,15 +34,33 @@ The basic circuit for the electret microphone was the follows.
 
 We generated a 660Hz tone, and measured the output from the microphone using with oscilloscope. 
 
-### Addition circuitry
+### Amplifier
 
 ![Amplifier Circuit](https://snag.gy/0ULVk8.jpg)
 
-**unit tests**
+### FFT
 
-**insert pictures**
+We downloaded the newer FFT library from [this link.](http://wiki.openmusiclabs.com/wiki/ArduinoFFT)
+Using the example code fft_adc_serial, we were able to use our phone to generate a 660 Hz sound and measure it using serial output.  The resulting FFT is shown below.  To compare to other signals and determine the length of a single bin, we used an additional 1320 Hz sound to compare on the FFT.  As seen in the FFT, the 660 Hz sound was captured in bin 49 while the 1320 Hz sound was captured in bin 57.
+
+![FFT](https://snag.gy/gdIKVR.jpg)
+
+**need to add more in this section, i'm not sure what else you guys want to put here **
+
+### Testing
 
 ### Override Button
+In the case that our circuit does not work, we also implemented a last resort to manually start the robot.  This was done with a simple button and setting a digital pin to INPUT. We created a new variable called start to have both methods start the robot.  Our circuit additions are shown below.
+
+**picture of override button**
+
+### Code
+
+```
+
+```
+
+### Video
 
 
 # Optical Team
