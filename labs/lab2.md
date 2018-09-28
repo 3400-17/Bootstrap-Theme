@@ -33,6 +33,8 @@ We generated a 660Hz tone, and measured the output from the microphone using wit
 
 ### Addition circuitry
 
+![Amplifier Circuit](https://snag.gy/0ULVk8.jpg)
+
 **unit tests**
 
 **insert pictures**
