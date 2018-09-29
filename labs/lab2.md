@@ -11,58 +11,6 @@
 * Use a microphone to detect whistle blow
 * Use additional sensor to capture inputs from an IR hat
 
-# Acoustic Team
-Marcela, Natan, & Siming
-
-### Materials Used
-* breadboard
-* wires
-* Arduino
-* Electret microphone
-* 1 uF capacitor
-* 300 Ohm resistor
-* 3 kOhm resistor
-
-### Goals
-The goal of the Acoustic team was to use a microphone to detect a 660 Hz sound.  This sound signals the robot to start in the competition.
-
-### Microphone circuit
-
-The basic circuit for the electret microphone was the follows. 
-
-<img src="https://cei-lab.github.io/ece3400-2018/images/lab2_fig1.png">
-
-We generated a 660Hz tone, and measured the output from the microphone using with oscilloscope. 
-
-### Amplifier
-
-![Amplifier Circuit](https://snag.gy/0ULVk8.jpg)
-
-### FFT
-
-We downloaded the newer FFT library from [this link.](http://wiki.openmusiclabs.com/wiki/ArduinoFFT)
-Using the example code fft_adc_serial, we were able to use our phone to generate a 660 Hz sound and measure it using serial output.  The resulting FFT is shown below.  To compare to other signals and determine the length of a single bin, we used an additional 1320 Hz sound to compare on the FFT.  As seen in the FFT, the 660 Hz sound was captured in bin 49 while the 1320 Hz sound was captured in bin 57.
-
-![FFT](https://snag.gy/gdIKVR.jpg)
-
-**need to add more in this section, i'm not sure what else you guys want to put here **
-
-### Testing
-
-### Override Button
-In the case that our circuit does not work, we also implemented a last resort to manually start the robot.  This was done with a simple button and setting a digital pin to INPUT. We created a new variable called start to have both methods start the robot.  Our circuit additions are shown below.
-
-**picture of override button**
-
-### Code
-
-```
-
-```
-
-### Video
-
-
 # Optical Team
 
 Michael Xiao and Zoe Du
@@ -180,6 +128,97 @@ void loop() {
 
 As seen from the video, the red LED only lights up when exposed to the 6.08 kHz light.  The 18 kHz does not trigger the light.
 
+# Acoustic Team
+Marcela, Natan, & Siming
+
+### Materials Used
+* breadboard
+* wires
+* Arduino
+* Electret microphone
+* 1 uF capacitor
+* 300 Ohm resistor
+* 3 kOhm resistor
+
+### Goals
+The goal of the Acoustic team was to use a microphone to detect a 660 Hz sound.  This sound signals the robot to start in the competition.
+
+### Microphone circuit
+
+The basic circuit for the Electret microphone was created using an additional 3 kOhm resistor and 1 uF capacitor.  The circuit is shown as follows. 
+
+<img src="https://cei-lab.github.io/ece3400-2018/images/lab2_fig1.png">
+
+We generated a 660Hz tone using a phone app and measured the output from the microphone using with oscilloscope. The result is shown below:
+
+** SCOPE PIC OF MIC SIGNAL **
+
+### Amplifier
+
+The first thing we noticed on the scope was how small the signal was.  We decided to create an amplifier to increase the amplitude of the signal such that we could get a better reading.  Following Team Alpha's schematic from last year, we created a working amplifier.  The main change we made was our choice of Op Amp.  We chose to use the LM358 model because of its compatibility with the 5V and ground rails.
+
+![Amplifier Circuit](https://snag.gy/0ULVk8.jpg)
+
+** Amplifier testing if we have time **
+
+### FFT
+
+As mentioned in the optical section, we also made use off the FFT library.  Using the example code fft_adc_serial, we were able to use our phone to generate a 660 Hz sound and measure it using serial output.  The main problem we encountered was that we were reading our 660 Hz sound in bin 5 with the previous code, as the bin size was around 150.  To make our FFT more detailed, we decided it would be easier to detect if we lowered the sampling frequency.
+
+This was done by using analogRead() to build our fft input table rather than the ADC.  The result of this was a FFT with a smaller range, perfect for our 660 Hz signal.  Rather than showing up in the 5th bin, our signal now showed up in bin 49.  The resulting FFT is shown below.  To compare to other signals , we used an additional 1320 Hz sound to compare on the FFT.  As seen in the FFT, the 660 Hz sound was captured in bin 49 while the 1320 Hz sound was captured in bin 57.
+
+![FFT](https://snag.gy/gdIKVR.jpg)
+
+### Testing
+
+To test, we used a similar techhnique to the optical team and attached an LED to a digital output pin.  When bin number 49 was over a certain threshold, this LED lights up signalling that a 660 kHz sound was detected.  We tested this using our tone generator with the noise in the lab to calibrate the threshold to a reasonable level.
+
+### Override Button
+In the case that our circuit does not work, we also implemented a last resort to manually start the robot.  This was done with a simple button and setting a digital pin to INPUT. We created a new variable called start to have both methods start the robot.  Our circuit additions are shown below.
+
+**picture of override button**
+
+### Code
+
+```
+#define LOG_OUT 1 // use the log output function
+#define FFT_N 256 // set to 256 point fft
+
+#include <FFT.h> // include the library
+
+void setup() {
+  Serial.begin(115200); // use the serial port
+  pinMode(4, INPUT);
+  pinMode(3, OUTPUT);
+
+}
+
+void loop() {
+  while(1) {
+    cli();
+    for (int i = 0 ; i < 512 ; i += 2) { //read from microphone
+      fft_input[i] = analogRead(A2);  // use analogRead to lower sampling frequency
+      fft_input[i+1] = 0;
+    }
+    fft_window();
+    fft_reorder();
+    fft_run();
+    fft_mag_log();
+    sei();
+
+    if (fft_log_out[20] > 40 || digitalRead(4) == HIGH){ //threshold on microphone or manual start
+      digitalWrite(3, HIGH);  
+    } else {
+      digitalWrite(3, LOW);  
+    }
+  }
+}
+
+```
+
+### Video
+** take video of audio team **
+
 # Merging our systems
 After getting both of our systems working, we connected our breadboards together and modified our code to use different analog and digital pins.  Our setup is shown below.  When a 660 kHz sound is played, the red LED lights up and when a 6.08 kHz IR light is detected, the yellow LED lights up.
 
@@ -196,6 +235,7 @@ After getting both of our systems working, we connected our breadboards together
 void setup() {
   Serial.begin(115200); // use the serial port
   pinMode(2, OUTPUT);
+  pinMode(4, INPUT);
   pinMode(3, OUTPUT);
 
 }
@@ -203,8 +243,8 @@ void setup() {
 void loop() {
   while(1) {
     cli();
-    for (int i = 0 ; i < 512 ; i += 2) {
-      fft_input[i] = analogRead(A2); //read from microphone
+    for (int i = 0 ; i < 512 ; i += 2) { //read from microphone
+      fft_input[i] = analogRead(A2);  // use analogRead to lower sampling frequency
       fft_input[i+1] = 0;
     }
     fft_window();
@@ -213,16 +253,24 @@ void loop() {
     fft_mag_log();
     sei();
 
-    if (fft_log_out[20] > 40){ //threshold on microphone
+    if (fft_log_out[20] > 40 || digitalRead(4) == HIGH){ //threshold on microphone or manual start
       digitalWrite(3, HIGH);  
     } else {
       digitalWrite(3, LOW);  
     }
 
     //optical 
-    for (int i = 0 ; i < 512 ; i += 2) {
-      fft_input[i] = analogRead(A3); //read from IR sensor
-      fft_input[i+1] = 0;
+    cli();  // UDRE interrupt slows this way down on arduino1.0
+    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
+      while(!(ADCSRA & 0x10)); // wait for adc to be ready
+      ADCSRA = 0xf5; // restart adc
+      byte m = ADCL; // fetch adc data
+      byte j = ADCH;
+      int k = (j << 8) | m; // form into an int
+      k -= 0x0200; // form into a signed int
+      k <<= 6; // form into a 16b signed int
+      fft_input[i] = k; // put real data into even bins
+      fft_input[i+1] = 0; // set odd bins to 0
     }
 
     fft_window();
