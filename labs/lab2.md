@@ -149,17 +149,15 @@ The basic circuit for the Electret microphone was created using an additional 3 
 
 <img src="https://cei-lab.github.io/ece3400-2018/images/lab2_fig1.png">
 
-We generated a 660Hz tone using a phone app and measured the output from the microphone using with oscilloscope. The result is shown below:
-
-** SCOPE PIC OF MIC SIGNAL **
-
 ### Amplifier
 
 The first thing we noticed on the scope was how small the signal was.  We decided to create an amplifier to increase the amplitude of the signal such that we could get a better reading.  Following Team Alpha's schematic from last year, we created a working amplifier.  The main change we made was our choice of Op Amp.  We chose to use the LM358 model because of its compatibility with the 5V and ground rails.
 
 ![Amplifier Circuit](https://snag.gy/0ULVk8.jpg)
 
-** Amplifier testing if we have time **
+After constructing an amplifier, we generated a 660 Hz tone usingg our phone and measured the output using an osilliscope.  The waveform is shown below and has a frequency of about 660 Hz.
+
+![Scope of amplifier](https://snag.gy/h39xMq.jpg)
 
 ### FFT
 
@@ -171,12 +169,12 @@ This was done by using analogRead() to build our fft input table rather than the
 
 ### Testing
 
-To test, we used a similar techhnique to the optical team and attached an LED to a digital output pin.  When bin number 49 was over a certain threshold, this LED lights up signalling that a 660 kHz sound was detected.  We tested this using our tone generator with the noise in the lab to calibrate the threshold to a reasonable level.
+To test, we used a similar techhnique to the optical team and attached an LED to a digital output pin.  When bin number 49 was over a certain threshold, this LED lights up signalling that a 660 kHz sound was detected.  We tested this using our tone generator with the noise in the lab to calibrate the threshold to a reasonable level.  We also tested sounds of other frequencies to see if they triggered the light and our design seemed robust enough for now.
 
 ### Override Button
-In the case that our circuit does not work, we also implemented a last resort to manually start the robot.  This was done with a simple button and setting a digital pin to INPUT. We created a new variable called start to have both methods start the robot.  Our circuit additions are shown below.
+In the case that our circuit does not work, we also implemented a last resort to manually start the robot.  This was done with a simple switch and setting a digital pin to INPUT. Our circuit is shown below.
 
-**picture of override button**
+![Acoustic Circuit](https://snag.gy/glUK5W.jpg)
 
 ### Code
 
@@ -188,8 +186,9 @@ In the case that our circuit does not work, we also implemented a last resort to
 
 void setup() {
   Serial.begin(115200); // use the serial port
-  pinMode(4, INPUT);
+  pinMode(13, INPUT);
   pinMode(3, OUTPUT);
+
 
 }
 
@@ -206,7 +205,7 @@ void loop() {
     fft_mag_log();
     sei();
 
-    if (fft_log_out[20] > 40 || digitalRead(4) == HIGH){ //threshold on microphone or manual start
+    if (fft_log_out[20] > 40 || digitalRead(13) == HIGH){ //threshold on microphone or manual start
       digitalWrite(3, HIGH);  
     } else {
       digitalWrite(3, LOW);  
@@ -214,12 +213,20 @@ void loop() {
   }
 }
 
+
 ```
 
 ### Video
-** take video of audio team **
+<iframe width="560" height="315" src="https://www.youtube.com/embed/p0V8Qy9Z_2U" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 # Merging our systems
+
+When we merged our systems, one thing we had trouble with was doing two separate types of reads, both with the ADC and analogRead().  For us, the analogRead() technique used by the acoustic team was easier to understand, despite having a lower sampling frequency.  To recalibrate our optical system, we did another FFt using the serial output to measure where the peaks were using the 6.08 kHz light.  The FFT is shown below:
+
+![6.08 kHz using analogRead](https://snag.gy/IuvGs6.jpg)
+
+As seen in the FFT, the 6.08 kHz had peaks near the 77th bin, most likely reesonant frequencies from the input.  Using this knowledge, we did two analogRead generated FFTs in our software, one for acoustic and one for optical.
+
 After getting both of our systems working, we connected our breadboards together and modified our code to use different analog and digital pins.  Our setup is shown below.  When a 660 kHz sound is played, the red LED lights up and when a 6.08 kHz IR light is detected, the yellow LED lights up.
 
 ![Audio and optical combined](https://snag.gy/jcfQ89.jpg)
@@ -234,9 +241,9 @@ After getting both of our systems working, we connected our breadboards together
 
 void setup() {
   Serial.begin(115200); // use the serial port
-  pinMode(2, OUTPUT);
-  pinMode(4, INPUT);
+  pinMode(13, INPUT);
   pinMode(3, OUTPUT);
+  pinMode(7, OUTPUT);
 
 }
 
@@ -253,38 +260,31 @@ void loop() {
     fft_mag_log();
     sei();
 
-    if (fft_log_out[20] > 40 || digitalRead(4) == HIGH){ //threshold on microphone or manual start
+    if (fft_log_out[20] > 40 || digitalRead(13) == HIGH){ //threshold on microphone or manual start
       digitalWrite(3, HIGH);  
     } else {
       digitalWrite(3, LOW);  
     }
 
-    //optical 
-    cli();  // UDRE interrupt slows this way down on arduino1.0
-    for (int i = 0 ; i < 512 ; i += 2) { // save 256 samples
-      while(!(ADCSRA & 0x10)); // wait for adc to be ready
-      ADCSRA = 0xf5; // restart adc
-      byte m = ADCL; // fetch adc data
-      byte j = ADCH;
-      int k = (j << 8) | m; // form into an int
-      k -= 0x0200; // form into a signed int
-      k <<= 6; // form into a 16b signed int
-      fft_input[i] = k; // put real data into even bins
-      fft_input[i+1] = 0; // set odd bins to 0
+    cli();
+    for (int i = 0 ; i < 512 ; i += 2) { //read from IR
+      fft_input[i] = analogRead(A0);  // use analogRead to lower sampling frequency
+      fft_input[i+1] = 0;
     }
-
     fft_window();
     fft_reorder();
     fft_run();
     fft_mag_log();
     sei();
-    if (fft_log_out[86]>10 ){ //check threshold
-      digitalWrite(2, HIGH);    
-    }else{
-      digitalWrite(2, LOW);    
-    }    
+
+    if (fft_log_out[154 ] > 20){ //threshold on IR
+      digitalWrite(7, HIGH);  
+    } else {
+      digitalWrite(7, LOW);  
+    }
   }
 }
+
 
 ```
 
