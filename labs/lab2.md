@@ -239,6 +239,9 @@ After getting both of our systems working, we connected our breadboards together
 
 #include <FFT.h> // include the library
 
+int robot = 0;   //another robot detected
+int start = 0;   //robot ready to go
+
 void setup() {
   Serial.begin(115200); // use the serial port
   pinMode(13, INPUT);
@@ -249,7 +252,26 @@ void setup() {
 
 void loop() {
   while(1) {
-    cli();
+    acoustic();
+    
+    if (start ==1){ //turn on light when robot is ready to go
+      digitalWrite(3, HIGH);  
+    } else {
+      digitalWrite(3, LOW);  
+    }
+
+    optical();
+    
+    if (robot ==1){ //another robot detected
+      digitalWrite(7, HIGH);  
+    } else {
+      digitalWrite(7, LOW);  
+    }
+  }
+}
+
+void acoustic(){
+  cli();
     for (int i = 0 ; i < 512 ; i += 2) { //read from microphone
       fft_input[i] = analogRead(A2);  // use analogRead to lower sampling frequency
       fft_input[i+1] = 0;
@@ -261,12 +283,14 @@ void loop() {
     sei();
 
     if (fft_log_out[20] > 40 || digitalRead(13) == HIGH){ //threshold on microphone or manual start
-      digitalWrite(3, HIGH);  
+      start = 1;  
     } else {
-      digitalWrite(3, LOW);  
+      start = 0;  
     }
+}
 
-    cli();
+void optical(){
+  cli();
     for (int i = 0 ; i < 512 ; i += 2) { //read from IR
       fft_input[i] = analogRead(A0);  // use analogRead to lower sampling frequency
       fft_input[i+1] = 0;
@@ -277,12 +301,11 @@ void loop() {
     fft_mag_log();
     sei();
 
-    if (fft_log_out[154 ] > 20){ //threshold on IR
-      digitalWrite(7, HIGH);  
+    if (fft_log_out[154 ] > 20){ //threshold on IR sesnsor
+      robot = 1;  
     } else {
-      digitalWrite(7, LOW);  
+      robot = 0;  
     }
-  }
 }
 
 
