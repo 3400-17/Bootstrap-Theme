@@ -5,7 +5,7 @@
 * detect other robots on the field
 * combine line following, robot detection, and wall detection - show what the robot is thinking with LEDs
 
-## Avoiding Walls
+## Implementation
 
 ### Hardware Additions
 
@@ -39,6 +39,8 @@ Following these steps, the robot can get out of any maze eventually by traversin
 To debug this algorithm, we first used Serial.println to see what logic the robot would perform next.  Using this and manually placing our robot at various points in the maze, we were able to confirm that our algorithm worked. 
 
 ## Adding Line Following
+
+We can utilize
 
 ## Detecting Other Robots
 
