@@ -159,6 +159,9 @@ After constructing an amplifier, we generated a 660 Hz tone usingg our phone and
 
 ![Scope of amplifier](https://snag.gy/h39xMq.jpg)
 
+Here is our circuitry:
+![Acoustic Circuit](https://snag.gy/glUK5W.jpg)
+
 ### FFT
 
 As mentioned in the optical section, we also made use off the FFT library.  Using the example code fft_adc_serial, we were able to use our phone to generate a 660 Hz sound and measure it using serial output.  The main problem we encountered was that we were reading our 660 Hz sound in bin 5 with the previous code, as the bin size was around 150.  To make our FFT more detailed, we decided it would be easier to detect if we lowered the sampling frequency.
@@ -172,9 +175,7 @@ This was done by using analogRead() to build our fft input table rather than the
 To test, we used a similar techhnique to the optical team and attached an LED to a digital output pin.  When bin number 49 was over a certain threshold, this LED lights up signalling that a 660 kHz sound was detected.  We tested this using our tone generator with the noise in the lab to calibrate the threshold to a reasonable level.  We also tested sounds of other frequencies to see if they triggered the light and our design seemed robust enough for now.
 
 ### Override Button
-In the case that our circuit does not work, we also implemented a last resort to manually start the robot.  This was done with a simple switch and setting a digital pin to INPUT. Our circuit is shown below.
-
-![Acoustic Circuit](https://snag.gy/glUK5W.jpg)
+In the case that our circuit does not work, we also implemented a last resort to manually start the robot.  This was done with a simple switch and setting a digital pin to INPUT. In our video, the button also turns on the LED in addition to the sound.
 
 ### Code
 
