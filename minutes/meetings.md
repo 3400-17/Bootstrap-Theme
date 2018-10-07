@@ -90,6 +90,14 @@ Everyone
 * Plans for the weekend?
 * Designed competition day tshirt
 
+# Meeting 8
+## Date: Friday Sept. 28, Upson 146, 11:15a-12:05p
+### Attendance
+Everyone
+### Minutes
+* Noted what's missing for lab 2
+* Designed competition day tshirt
+
 
   
 
