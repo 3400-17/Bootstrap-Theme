@@ -54,6 +54,8 @@ As seen in the FFT, there are a lot of spurious frequencies that can be filtered
 
 ![Chebyshev Bandpass Filter](https://snag.gy/Wm1lCh.jpg)
 
+![Implemented Chebyshev Bandpass Filter](https://snag.gy/c58QC3.jpg)
+
 To test our filter, we used a function generator to generate a 18 kHz and 6 kHz sine wave and scoped the amplifier output to compare waveform.  As seen in the figure below, the 18 kHz has been significantly reduced and filtered out.  We tested the range of the filter using the function generator and found that it did indeed allow the signals with 4 - 8 kHz to pass.
 
 ![18 kHz input vs 6 kHz input](https://snag.gy/k9dGcC.jpg)
