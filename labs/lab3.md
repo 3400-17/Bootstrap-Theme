@@ -1,3 +1,16 @@
+#Radio Group
+use 9x9 2D arrary to represent maze 
+each value is a 32 bit unsigned long so we can transmite the information of one square with on transimittion 
+but we need to tranmite several times for the whole maze
+
+8 bits used for location
+4 bits for the walls around one square
+4 bits for the color and shape of treasure
+1 bits for if the square is explored or not
+1 bit for the existance of robot 
+
+
+
 /*
  Copyright (C) 2011 J. Coliz <maniacbug@ymail.com>
 
