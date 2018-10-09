@@ -1,7 +1,9 @@
 #Radio Group
 use 9x9 2D arrary to represent maze 
-each value is a 32 bit unsigned long so we can transmite the information of one square with on transimittion 
+each value is a 32 bit char so we can transmite the information of one square with on transimittion 
 but we need to tranmite several times for the whole maze
+
+char* maze[9][9]
 
 8 bits used for location
 4 bits for the walls around one square
