@@ -8,8 +8,19 @@ char* maze[9][9]
 8 bits used for location
 4 bits for the walls around one square
 4 bits for the color and shape of treasure
+00  no color   00 no shape
+01  red        01 triangle
+10  blue       10 rectangle
+11  yellow     11 circle 
+
+
 1 bits for if the square is explored or not
 1 bit for the existance of robot 
+
+
+
+ //x_coord|y_coord|walls|treasure|robot| explored
+ //4 bits|4 bits | 4 bits|4 bits| 1 bit | 1 bit
 
 
 
