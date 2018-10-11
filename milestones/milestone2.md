@@ -51,7 +51,7 @@ After developing the above algorithm, the next problem we needed to solve was to
 
 Combining these subfunctions, with the above algorithm, we were able to have our robot successfully navigte the maze.  Our code looks like the following:
 
-'''
+~~~
  frontWallValue = map(analogRead(frontWall), 0, 1023, 0, 255); 
   rightWallValue = map(analogRead(rightWall), 0, 1023, 0, 255); 
   if (rightWallValue < 50){ //no right wall
@@ -62,7 +62,7 @@ Combining these subfunctions, with the above algorithm, we were able to have our
   }else{
     turnLeft();
   }
-'''
+~~~
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6lR5Z0Hitc8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
@@ -78,7 +78,7 @@ After we had our robot working, we tried several other maze configurations and o
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2NvHqhuAE28" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### Code
-'''
+~~~
 #define LOG_OUT 1 // use the log output function
 #define FFT_N 256 // set to 256 point fft
 
@@ -215,6 +215,5 @@ void optical(){
     Serial.println(fft_log_out[154]);
 }
 
-'''
-
+~~~
 
