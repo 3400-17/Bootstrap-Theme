@@ -71,6 +71,40 @@ void loop(void)
 
 
 receiver's update 
+ if ( role == role_pong_back )
+  {
+    // if there is data ready
+    if ( radio.available() )
+    {
+      // Dump the payloads until we've gotten everything
+      word package;
+      bool done = false;
+      while (!done)
+      {
+        // Fetch the payload, and see if this was the last one.
+        done = radio.read( package, sizeof(package) );
+
+        // Spew it
+        printf("Got payload ...",package);
+       
+
+        // Delay just a little bit to let the other unit
+        // make the transition to receiver
+        delay(20);
+
+      }
+
+      // First, stop listening so we can talk
+      radio.stopListening();
+      
+      // Send the final one back.
+      radio.write( 6, sizeof(int) );
+      printf("Sent response.\n\r");
+
+      // Now, resume listening so we catch the next packets.
+      radio.startListening();
+    }
+  }
 
 
 
