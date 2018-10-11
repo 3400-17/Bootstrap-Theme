@@ -75,6 +75,8 @@ One thing we plant to change in the future is putting the robot detection before
 After we had our robot working, we tried several other maze configurations and our robot was able to successfully navigate them all!
 
 ### Video
+As seen in the video, the robot is able to detect walls and make decisionsn based on what walls it sees.  It also is able to adjust itself with the line sensors to make sure that it stays on track.  Lastly, it can detect the presence of other robots directly ahead of it and stops in its tracks.
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2NvHqhuAE28" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### Code
