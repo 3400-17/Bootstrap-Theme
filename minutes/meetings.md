@@ -91,13 +91,51 @@ Everyone
 * Designed competition day tshirt
 
 # Meeting 8
+## Date: Wednesday Sept. 26, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Finished Lab 2
+  * Integrated both circuits into one.
+
+# Meeting 9
 ## Date: Friday Sept. 28, Upson 146, 11:15a-12:05p
 ### Attendance
 Everyone
 ### Minutes
-* Noted what's missing for lab 2
-* Designed competition day tshirt
+* Worked on Lab 2 report for website.
 
+# Meeting 10
+## Date: Wednesday Oct. 3, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Finished taking data for Lab 2 report.
+* Finished lab 2 website.
+* Started working on wall-following and radio.
+ * Got basic radio transmission working.
+ * Decided on data structure.
+ 
+# Meeting 11
+## Date: Friday Oct. 5, Upson 146, 11:15a-12:05p
+### Attendance
+Natan Siming Marcela
+### Minutes
+* Talked about Fall Break plans.
 
-  
+# Meeting 12
+## Date: Wednesday Oct. 10, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Finished Milestone 2.
+* Kept working on radio and transmitting using our chosen data struct.
+ 
+# Meeting 13
+## Date: Friday Sept. 12, Upson 146, 11:15a-12:05p
+### Attendance
+Everyone
+### Minutes
+* Talk about Sp2019 roster being out.
+
 
