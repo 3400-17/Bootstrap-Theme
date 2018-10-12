@@ -128,7 +128,7 @@ Natan Siming Marcela
 ### Attendance
 Everyone
 ### Minutes
-* Finished Milestone 2.
+* Finished Milestone 2 practical.
 * Kept working on radio and transmitting using our chosen data struct.
  
 # Meeting 13
@@ -136,6 +136,7 @@ Everyone
 ### Attendance
 Everyone
 ### Minutes
-* Talk about Sp2019 roster being out.
+* Finished Milestone 2 report.
+* Talked about Sp2019 roster being out.
 
 
