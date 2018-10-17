@@ -1,5 +1,27 @@
-#Radio Group
+# Lab 3: System Integration and Radio Communication
 
+## Teams
+
+**Team 1**: (Radio) Zoe, Marcela, and Siming
+
+**Team 2**: (Robot) Michael and Natan
+
+## Objectives
+
+*Integreate components
+*Send maze information to base station
+*Navigate maze autonomously
+
+
+# Radio Group
+
+Zoe, Marcela, and Siming 
+
+### Materials used: 
+
+* 2 Nordic nRF24l01+ Transceivers
+* 2 Arduino Unos
+* 2 radio breakout boards with headers
 
 define maze 
 word maze[9][9]
