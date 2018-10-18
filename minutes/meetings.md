@@ -132,11 +132,19 @@ Everyone
 * Kept working on radio and transmitting using our chosen data struct.
  
 # Meeting 13
-## Date: Friday Sept. 12, Upson 146, 11:15a-12:05p
+## Date: Friday Oct. 12, Upson 146, 11:15a-12:05p
 ### Attendance
 Everyone
 ### Minutes
 * Finished Milestone 2 report.
 * Talked about Sp2019 roster being out.
+
+# Meeting 14
+## Date: Wednesday Oct. 17, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Finished radio transimission testing.
+* Integrated tested circuits.
 
 
