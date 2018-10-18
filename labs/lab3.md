@@ -58,11 +58,15 @@ We first tested the data transmission with sample data to ensure the radio is wo
 
 
 ### Code
-
+We defined our maze as a matrix of 9 by 9 words. Each word is 16 bits, which is sufficient for all our information needed. 
 ~~~
 define maze 
-word maze[9][9]
+word maze[9][9] 
+~~~
 
+The following code is for transmitting the information. The transmitter is sent as ping_out, and send over the information as defined below. The information is then shifted to cancatenate into a 16 bit word to transmit over radio channel. Then it start listening for the confirmation message from the receiver and print out the success or failure of the transmission. 
+
+~~~
 sender 
 send update 
 
@@ -127,7 +131,7 @@ void loop(void)
     // Try again 1s later
     delay(1000);
   }
-
+~~~
 
 receiver's update 
  if ( role == role_pong_back )
@@ -437,6 +441,8 @@ We made the robot go through the maze on the line and following the wall. We als
 ![Maze Diagram](https://snag.gy/YankGH.jpg)
 
 ### Hardware
+We implemented an integrated circuit with functionalities from lab 2, as shown in the following diagram. The board allows the robot to pick up 660Hz frequency, and distinguish between the decoys and robots. 
+![IR detection circuit](https://snag.gy/kgXlA9.jpg)
 
 ### Software
 
