@@ -132,7 +132,8 @@ void loop(void)
     delay(1000);
   }
 ~~~
-
+For the receiver, the code is the following. The code first set the role of the Arduino as receiver, and check if the data transmission has finished. Once it has confirmed that the data transmission is over, the receiver will switch roles to transmit a confirmation message. 
+~~~
 receiver's update 
  if ( role == role_pong_back )
   {
@@ -168,8 +169,10 @@ receiver's update
       radio.startListening();
     }
   }
+~~~
+The following code are the code for sender. It adds power and time settings in addition to the framwork for sender as shown before. 
 
-
+~~~
 //
 sender code
 
@@ -421,9 +424,8 @@ void loop(void)
   }
 }
 // vim:cin:ai:sts=2 sw=2 ft=cpp
-
-
 ~~~
+
 ## Robot Team
 
 Michael and Natan
