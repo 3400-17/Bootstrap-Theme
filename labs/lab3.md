@@ -49,7 +49,7 @@ Since the memory space on the Arduino is limited, we need to make the data as ef
 * robots: 1 bit, if there another robot in the neighborhood
 * location: 7 bits, representing the location in the maze
 
-![Maze Information](https://snag.gy/zErULK.jpg)
+![Maze Information](https://snag.gy/EgoWxF.jpg)
 
 ![Data Structure](https://snag.gy/tlwBLu.jpg)
 
