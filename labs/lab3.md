@@ -178,7 +178,6 @@ sender code
 
 /*
  Copyright (C) 2011 J. Coliz <maniacbug@ymail.com>
-
  This program is free software; you can redistribute it and/or
  modify it under the terms of the GNU General Public License
  version 2 as published by the Free Software Foundation.
@@ -255,7 +254,7 @@ void setup(void)
   radio.setChannel(0x50);
   // set the power
   // RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_MED=-6dBM, and RF24_PA_HIGH=0dBm.
-  radio.setPALevel(RF24_PA_HIGH); // setting the power at high allows the best transmission accuracy
+  radio.setPALevel(RF24_PA_MAX);
   //RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
   radio.setDataRate(RF24_250KBPS);
 
@@ -295,7 +294,7 @@ void setup(void)
 
   radio.printDetails();
 }
-
+word walls=1;//1100 north &south
 void loop(void)
 {
   //
@@ -313,8 +312,8 @@ void loop(void)
     word explored=0;
     word treasure=5;// 101 blue tirangle
     word robot=0; //no robot 
-    word walls=12;//1100 north &south
-   
+    
+    walls=walls+1;
     word package=explored<<15|walls<<11|treasure<<8|robot<<7|loc;
 
     
@@ -334,7 +333,7 @@ void loop(void)
     unsigned long started_waiting_at = millis();
     bool timeout = false;
     while ( ! radio.available() && ! timeout )
-      if (millis() - started_waiting_at > 200 )
+      if (millis() - started_waiting_at > 500 )
         timeout = true;
 
     // Describe the results
@@ -347,15 +346,16 @@ void loop(void)
       // Grab the response, compare, and send to debugging spew
       int confirm;
       if(radio.read( &confirm, sizeof(int) ))
-      {printf("Got confirming response");
+      {printf("Got confirming response %d",confirm);
       }
+      Serial.println();
       // Spew it
       
       
     }
 
     // Try again 1s later
-    delay(1000);
+    delay(2000);
   }
 
   //
@@ -424,7 +424,6 @@ void loop(void)
   }
 }
 // vim:cin:ai:sts=2 sw=2 ft=cpp
-~~~
 
 ## Robot Team
 
