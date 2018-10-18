@@ -31,13 +31,13 @@ The goals for the radio team were to allow the robot to transmit maze informatio
 
 We first plug the radio into the Arduinos using the special printed circuit boards. The radio is wired into the 3.3V pin on the Arduino. We do the same circuit set up for both Arduinos, as one of them will simulate the robot, and one of them will simulate the base station. 
 
-![Radio circuit] (https://snag.gy/Rs1Zdq.jpg)
+![Radio circuit](https://snag.gy/Rs1Zdq.jpg)
 
 ### Software 
 
 We programmed the both of the Arduinos. We chosed one of them being the transmitter and ther other as the receiver. After the codes are loaded on the board, we typed "T" in the serial monitor, and put the Arduino in the tramitter mode. In a successful transmission, the received should send a confirmation message to the transmitter, confirming that it has received the message. 
 
-[Serial Output] (inset link)
+[Serial Output] (INSERT LINK)
 
 ### Maze Information Representation
 
@@ -49,9 +49,9 @@ Since the memory space on the Arduino is limited, we need to make the data as ef
 * robots: 1 bit, if there another robot in the neighborhood
 * location: 7 bits, representing the location in the maze
 
-![Maze Information] (https://snag.gy/zErULK.jpg)
+![Maze Information](https://snag.gy/zErULK.jpg)
 
-![Data Structure] (https://snag.gy/tlwBLu.jpg)
+![Data Structure](https://snag.gy/tlwBLu.jpg)
 
 ### GUI Transmission
 We first tested the data transmission with sample data to ensure the radio is working as expected. 
@@ -434,7 +434,7 @@ Michael and Natan
 ### Goals
 We made the robot go through the maze on the line and following the wall. We also implemented IR hat detection to simulate the process of running into another robot in the maze. 
 
-![Maze Diagram] (https://snag.gy/YankGH.jpg)
+![Maze Diagram](https://snag.gy/YankGH.jpg)
 
 ### Hardware
 
