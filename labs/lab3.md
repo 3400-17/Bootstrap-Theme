@@ -49,9 +49,9 @@ Since the memory space on the Arduino is limited, we need to make the data as ef
 * robots: 1 bit, if there another robot in the neighborhood
 * location: 7 bits, representing the location in the maze
 
-[Maze Information] (https://snag.gy/zErULK.jpg)
+![Maze Information] (https://snag.gy/zErULK.jpg)
 
-[Data Structure] (https://snag.gy/tlwBLu.jpg)
+![Data Structure] (https://snag.gy/tlwBLu.jpg)
 
 ### GUI Transmission
 We first tested the data transmission with sample data to ensure the radio is working as expected. 
@@ -434,7 +434,7 @@ Michael and Natan
 ### Goals
 We made the robot go through the maze on the line and following the wall. We also implemented IR hat detection to simulate the process of running into another robot in the maze. 
 
-[Maze Diagram] (https://snag.gy/YankGH.jpg)
+![Maze Diagram] (https://snag.gy/YankGH.jpg)
 
 ### Hardware
 
