@@ -147,4 +147,11 @@ Everyone
 * Finished radio transimission testing.
 * Integrated tested circuits.
 
-
+# Meeting 15
+## Date: Friday Oct. 19, Upson 146, 11:15a-12:05p
+### Attendance
+Everyone
+### Minutes
+* talked through updates
+* need to finish radio
+* updated web page
