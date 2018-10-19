@@ -52,13 +52,18 @@ const char* role_friendly_name[] = { "invalid", "Ping out", "Pong back"};
 // The role of the current running sketch
 role_e role = role_pong_back;
 
+int walls=0;
 void setup(void)
 {
-  //
-  // Print preamble
-  //
+//  printf("reset");
+//  delay(1000);
+// 
+ 
 
   Serial.begin(57600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
   printf_begin();
 //  printf("\n\rRF24/examples/GettingStarted/\n\r");
 //  printf("ROLE: %s\n\r",role_friendly_name[role]);
@@ -107,13 +112,12 @@ void setup(void)
   // Dump the configuration of the rf unit for debugging
   //
 
-  radio.printDetails();
+  //radio.printDetails();
 }
 
 void loop(void)
 {
   
-  delay(1000);
   //
   // Ping out role.  Repeatedly send the current time
   //
@@ -168,6 +172,7 @@ void loop(void)
 
   if ( role == role_pong_back )
   {
+ 
     //Serial.println("reset");
     // if there is data ready
     if ( radio.available() )
@@ -179,11 +184,7 @@ void loop(void)
       {
         // Fetch the payload, and see if this was the last one.
         done = radio.read( &got_update, sizeof(word) );
-        // Spew it
-        //printf("Got payload ...");
-
-        // Delay just a little bit to let the other unit
-        // make the transition to receiver
+        
         word explored=got_update>>15;
         word walls=got_update>>11&15; //  1111
         word treasure=got_update>>8&8; //  111;
@@ -192,24 +193,24 @@ void loop(void)
         word x=loc%9;
         int y=loc/9-0.5;
         char c=',';
+
+    
         
         Serial.print(x);
         Serial.print(c);
         Serial.print(y);
         Serial.print(c);
-        Serial.print("north=");
-        Serial.print((walls&8)>>3);
-        Serial.print(c);
-        Serial.print("south=");
-        Serial.print((walls&4)>>2);
-        Serial.print(c);
-        Serial.print("west=");
-        Serial.print((walls&2)>>1);
-        Serial.print(c);
-        Serial.print("east=");
-        Serial.print(walls&1);
+ 
+        if ((walls&8)>>3){Serial.print("north=true,");}
+        else {Serial.print("north=false,");}
+        if ((walls&3)>>2){Serial.print("south=true,");}
+        else {Serial.print("south=false,");}
+        if ((walls&2)>>1){Serial.print("west=true,");}
+        else {Serial.print("west=false,");}
+        if (walls&1){Serial.print("east=true");}
+        else {Serial.print("east=false");}
         Serial.print("\n");
-    
+
       }
       delay(20);
       
