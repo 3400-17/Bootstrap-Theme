@@ -29,7 +29,7 @@ The goals for the radio team were to allow the robot to transmit maze informatio
 
 ### Hardware
 
-We first plug the radio into the Arduinos using the special printed circuit boards. The radio is wired into the 3.3V pin on the Arduino. We do the same circuit set up for both Arduinos, as one of them will simulate the robot, and one of them will simulate the base station. 
+We first plugged the radio into the Arduinos using the special PCBs. The radio is wired into the 3.3V pin on the Arduino, or through a 3.3V supply if the Arduino is a knockoff. We do the same circuit set up for both Arduinos, as one of them will simulate the robot, and the other  simulate the base station. 
 
 ![Radio circuit](https://snag.gy/Rs1Zdq.jpg)
 
@@ -39,7 +39,7 @@ We programmed the both of the Arduinos. We chosed one of them being the transmit
 
 [Serial Output] (INSERT LINK)
 
-### data scheme to store all maze information
+### Data Structure for Sending/Receiving Maze Information
 
 Since the memory space on the Arduino is limited, we need to make the data as effcient in space as possible. The data structure is the following:
 
