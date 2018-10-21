@@ -35,10 +35,11 @@ We first plugged the radio into the Arduinos using the special PCBs. The radio i
 
 ### Software 
 
-We programmed the both of the Arduinos. We chosed one of them being the transmitter and ther other as the receiver. After the codes are loaded on the board, we typed "T" in the serial monitor, and put the Arduino in the tramitter mode. In a successful transmission, the received should send a confirmation message to the transmitter, confirming that it has received the message. 
+Following the instructions with the lab, we downloaded the RF24 library for the radios and changed our pipes to 2E and 2F (46 and 47 in decimal).  We set one of the Arduinos to transmit by typing "T" into the serial monitor and successfully sent a package to the receiving Arduino.  In the case of a successful transmission, the receiver would then confirm the message was received. 
 
-[Serial Output] (INSERT LINK)
+After sending a successful package over, we then installed the materials for the GUI, found [here](https://github.com/backhous/ece3400-maze-gui).  To summarize, the GUI operates by taking messages from the serial monitor of the Arduino IDE in the form of x_pos, y_pos, walls where walls refers to whether a wall exists or not (ie. north=true or west=false).  In later labs, we can also tell the GUI whether a treasure is there or not.  
 
+To get familiar with the GUI, 
 ### Data Structure for Sending/Receiving Maze Information
 
 Since the memory space on the Arduino is limited, we need to make the data as effcient in space as possible. The data structure is the following:
