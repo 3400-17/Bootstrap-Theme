@@ -53,7 +53,9 @@ Following the instructions with the lab, we downloaded the RF24 library for the 
 
 After sending a successful package over, we then installed the materials for the GUI, found [here](https://github.com/backhous/ece3400-maze-gui).  To summarize, the GUI operates by taking messages from the serial monitor of the Arduino IDE in the form of x_pos, y_pos, walls where walls refers to whether a wall exists or not (ie. north=true or west=false).  In later labs, we can also tell the GUI whether a treasure is there or not.  
 
-To get familiar with the GUI, we first sent direct GUI input using Serial.println and seeing how the GUI would react. Using the example 2x3 code provided in the repository, we then expanded the code to a 9x9 map and corrected the code to take in our particular data structure and process it into a Serial print statement to be used by the GUI.  The reciever code can be found below.
+### Testing from Base Station
+
+To get familiar with the GUI, we first sent direct GUI input from the base station using Serial.println and seeing how the GUI would react. Using the example 2x3 code provided in the repository, we then expanded the code to a 9x9 map and corrected the code to take in our particular data structure and process it into a Serial print statement to be used by the GUI.  
 
 ### Wireless Transmission with Data Structure
 
@@ -698,6 +700,7 @@ void forward() {
   right.write(0);
   delay(100);
   still();
+  while(robot==1) optical();
 }
 
 void still() {
@@ -793,13 +796,6 @@ void optical() {
   fft_run(); // process the data in the fft
   fft_mag_log(); // take the output of the fft
   sei();
-  //    Serial.println("start");
-  //    for (byte i = 0 ; i < FFT_N/2 ; i++) {
-  //      Serial.println(fft_log_out[i]); // send out the data
-  //    }
-
-  //    Serial.println(fft_log_out[82]);
-
   if (fft_log_out[82] > 67) {
     digitalWrite(2, HIGH);
     robot = 1;
@@ -837,13 +833,6 @@ void audio() {
   fft_run(); // process the data in the fft
   fft_mag_log(); // take the output of the fft
   sei();
-  //    Serial.println("start");
-  //    for (byte i = 0 ; i < FFT_N/2 ; i++) {
-  //      Serial.println(fft_log_out[i]); // send out the data
-  //    }
-
-  //    Serial.println(fft_log_out[4]);
-
   if (fft_log_out[4] > 160) {
     start = 1;
   }
@@ -860,33 +849,24 @@ void setup() {
   left.attach(3);
   right.attach(5);
   Serial.begin(57600);
-  //  audio();
   digitalWrite(2, LOW); //LED off
   digitalWrite(7, LOW); //sound MUX
-  //  while(start==0){
-  //    audio();
-  //    delay(10);
-  //  }
-  still();
-  delay(4000);
+  while(start==0){
+    audio();
+    delay(10);
+  }
+
   digitalWrite(7, HIGH); //optical MUX
   digitalWrite(2, HIGH); //LED on
   still();
-  
   transmit();
-
 }
 
 void loop() {
-
-  //  coast();
-  counter++;
-  if (counter==7) delay(3000);
-  
   frontWallValue = map(analogRead(frontWall), 0, 1023, 0, 255);
   rightWallValue = map(analogRead(rightWall), 0, 1023, 0, 255);
   leftWallValue = map(analogRead(leftWall), 0, 1023, 0, 255);
-//  optical();
+  optical();
   if (rightWallValue < 50) { //no right wall
     turnRight();
     coast();
@@ -894,7 +874,6 @@ void loop() {
     coast();
   } else {
     turnLeft();
-    //    coast();
   }
 }
 
