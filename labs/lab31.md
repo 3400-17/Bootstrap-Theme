@@ -550,11 +550,11 @@ switch (compass) {
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9kuqzpLLxKA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 The video does not show the decoy because the lab was so crowded.  We were sharing the power supply with other groups and did not have a power supply channel for the decoy.  However, our hardware can successfully filter out the decoy signals as seen from Lab 2.
 
-** View from GUI **
-<iframe width="560" height="315" src="https://www.youtube.com/embed/GSFPWY34c6M" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 Here is the actual maze compared the mapped maze:
 ![Map!](https://snag.gy/j6FSYB.jpg)
+
+Another successful maze navigation with closer view of GUI:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gxZKNN0CSAA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ### Code
 ~~~
