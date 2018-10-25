@@ -308,6 +308,9 @@ After testing our parts for functionality, we then worked to make our parts more
 
 ![Protoboard](https://snag.gy/eZTkPi.jpg)
 
+Here is a video of our protoboard testing:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YIKFtedJMEw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 ### Software: 
 To integrate the FFT based audio and optical recognition, we had to modify code a bit in order to prevent interference with the timers controlling the servo motors.  To do this, every time we used the FFT library, we saved the timer variables in placeholder variables as so:
 
