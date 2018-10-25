@@ -67,6 +67,7 @@ Next, we set up our data structure for how the FPGA would communicate what the c
 ![data structure](https://i.imgur.com/RdsITlB.png)
 
 Using this structure, we can communicate all cases for the treasure:
+
 | 000         | 001         | 010          | 011           | 100        | 101         | 110         | 111          |
 |-------------|-------------|--------------|---------------|------------|-------------|-------------|--------------|
 | no treasure | no treasure | red triangle | blue triangle | red square | blue square | red diamond | blue diamond |
