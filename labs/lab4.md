@@ -44,9 +44,9 @@ To wire the camera, we needed the Arduino and the FPGA.  The Arduino would set u
 
 ![Hardware](https://cei-lab.github.io/ece3400-2018/images/Lab3CameraWiringDiagram.png)
 
-Following the schematic
+Following the schematic (SIOC <-> SCL, SIOD <-> SDA, MCLK <-> XCLK), we then completed our wiring.  The 10k resistors are pullups to 3.3 V and we made sure to disable the internal 5V pullups on the Arduino to ensure that the FPGA would be receiving the correct voltage.  After the TAs checked our work, we continued to the next step.  Below is our wiring:
 
-![Wiring the camera]()
+![Wiring the camera](https://i.imgur.com/8RRD6vV.jpg?1)
 
 ### Software
 To test the register setup, we used the provided Arduino code with some of our own modifications.  The first thing we had to find was the slave write register number.  From the data sheet, we found that its address number is 0x42, or 01000010 in binary.  However, Arduino's wire library automatically appends the last bit depending on if it is trying to read or write so we removed the least significant bit, giving 00100001, or 0x21, which we defined as OV7670_I2C_ADDRESS.  
@@ -74,9 +74,6 @@ Using this structure, we can communicate all cases for the treasure:
 ### Voltage Divider
 
 ![Voltage Divider](https://i1.wp.com/randomnerdtutorials.com/wp-content/uploads/2015/09/voltage-divider-circuit.png?resize=408%2C151&ssl=1)
-
-
-
 
 ### Code
 
