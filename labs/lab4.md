@@ -34,4 +34,15 @@ How to encode the what we see in the camera to the Arduino.
 camera connects to GPIO, 8 outputs, feeds straight
 a block to strip away bits
 a block to detect treasure
+
 ### 
+
+
+# FPGA team
+
+Marcela, Zoe, and Natan
+
+### Materials Used:
+
+* DEO- Nano FPGA
+* VGA adapter and cord
