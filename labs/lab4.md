@@ -101,7 +101,8 @@ To test the display, we assigned the WRITE_ADDRESS wire the value of READ_ADDRES
 
 #### Test WRITE_ADDRESS and RAM input data assignments
 
-```assign WRITE_ADDRESS = 1'd1 + READ_ADDRESS;
+```
+assign WRITE_ADDRESS = 1'd1 + READ_ADDRESS;
 ```
 
 ```///// PIXEL DATA /////
