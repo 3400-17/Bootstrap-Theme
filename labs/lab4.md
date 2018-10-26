@@ -22,7 +22,7 @@ Michael and Siming
 * OV7670 digital camera
 
 ### Goals
-The goals for the Arduino team is for wiring the camera, setting up its registers with the Arduino, and reading in treasure data from the FPGA. 
+The goals for the Arduino team are wiring the camera, setting up its registers with the Arduino, and reading in treasure data from the FPGA. 
 
 [Hardware connections](https://snag.gy/nLMzXN.jpg)
 
@@ -86,3 +86,20 @@ Marcela, Zoe, and Natan
 
 * DEO- Nano FPGA
 * VGA adapter and cord
+
+### Goals
+
+The goals for the FPGA team are to write test data into the board's embedded memory and connect it to the VGA driver, to display it on the computer monitor. 
+
+### PLL
+
+Like the Arduino team we also followed the PLL instructions before starting the lab and connected each clock line to the module that needed it: 24MHz for the camera, 25MHz for the VGA module and RAM's read cycles, and 50MHz for RAM's write cycles.
+
+### Setup
+
+To test the display, we assigned the WRITE_ADDRESS wire the value of READ_ADDRESS+1. We decided to deal with any failing edge cases this could entail after testing our connection to the VGA driver worked and the monitor displayed our test data as desired. We set the input data to the RAM to always be red in RGB 332, i.e. 8'b111_000_00. We also set W_EN, the write-enable signal for the RAM, to be high only while the address requested by the VGA driver was inside the pixel range, defined by the parameters SCREEN_HEIGHT and SCREEN_WIDTH, using the provided loop that changes the VGA_READ_MEM_EN (see code below).
+
+
+
+
+
