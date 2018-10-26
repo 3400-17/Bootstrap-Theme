@@ -103,7 +103,7 @@ To test the display, we assigned the WRITE_ADDRESS wire the value of READ_ADDRES
 ```assign WRITE_ADDRESS = 1'd1 + READ_ADDRESS;```
 ```///// PIXEL DATA /////
 reg [7:0]	pixel_data_RGB332 = 8'b111_000_00;
-
+```
 
 #### Setting W_EN
 ```
