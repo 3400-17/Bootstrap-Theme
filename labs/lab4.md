@@ -99,7 +99,27 @@ Like the Arduino team we also followed the PLL instructions before starting the 
 
 To test the display, we assigned the WRITE_ADDRESS wire the value of READ_ADDRESS+1. We decided to deal with any failing edge cases this could entail after testing our connection to the VGA driver worked and the monitor displayed our test data as desired. We set the input data to the RAM to always be red in RGB 332, i.e. 8'b111_000_00. We also set W_EN, the write-enable signal for the RAM, to be high only while the address requested by the VGA driver was inside the pixel range, defined by the parameters SCREEN_HEIGHT and SCREEN_WIDTH, using the provided loop that changes the VGA_READ_MEM_EN (see code below).
 
+#### Test WRITE_ADDRESS and RAM input data assignments
+```assign WRITE_ADDRESS = 1'd1 + READ_ADDRESS;```
+```///// PIXEL DATA /////
+reg [7:0]	pixel_data_RGB332 = 8'b111_000_00;
 
 
+#### Setting W_EN
+```
+///////* Update Read & Write Addresses *///////
+always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
+		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
+		//WRITE_ADDRESS = (1'd1 + VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
+		if(VGA_PIXEL_X>(`SCREEN_WIDTH-1) || VGA_PIXEL_Y>(`SCREEN_HEIGHT-1))begin
+				VGA_READ_MEM_EN = 1'b0;
+				W_EN = 1'b0;
+		end
+		else begin
+				VGA_READ_MEM_EN = 1'b1;
+				W_EN =  1'b1;
+		end
+end
+```
 
 
