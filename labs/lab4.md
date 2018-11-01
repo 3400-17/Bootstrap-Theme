@@ -134,9 +134,9 @@ VSYNC is GPIO_1[30]
 #### downsampler 
 for each pixel, we downsize 16 bits RGB value to 8 bits per pixel, there are two clocks for the whole RGB value from camera so we take Red and Green from first clock and Blue from second clock. 
 
-# first pclk
+#### first pclk
 Red=D[7:5]
 Green=D[2:0]
-# second pclk
+#### second pclk
 Blue=D[4:3]
 
