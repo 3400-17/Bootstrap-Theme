@@ -7,15 +7,16 @@ void set_color_matrix(){
     
     
     OV7670_write_register(0x12, 0x80); //reset registers
+    OV7670_write_register(0x12, 0x02); // RGB output format
+
     
-//    OV7670_write_register(0x12, 0x07); //color bar test
+//    OV7670_write_register(0x12, 0x06); //color bar test
 //    OV7670_write_register(0x42, 0x08); //color bar test
 
-    OV7670_write_register(0x12, 0x04); // RGB output format
     OV7670_write_register(0x3e, 0x08); //scaling parameter can be adjusted
 
     OV7670_write_register(0x11, 0xc0); //internal clock is external clock
-    OV7670_write_register(0x1e, 0x00); //vertical flip and mirror
+    OV7670_write_register(0x1e, 0x00); //vertical flip and mirror disabled 
 
     OV7670_write_register(0x40, 0xd0); // 565 Output
     
