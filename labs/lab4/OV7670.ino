@@ -4,6 +4,23 @@
 
 void set_color_matrix(){
     Serial.println(OV7670_write_register(0x4f, 0x80));
+    
+    
+    OV7670_write_register(0x12, 0x80); //reset registers
+    
+//    OV7670_write_register(0x12, 0x07); //color bar test
+//    OV7670_write_register(0x42, 0x08); //color bar test
+
+    OV7670_write_register(0x12, 0x04); // RGB output format
+    OV7670_write_register(0x3e, 0x08); //scaling parameter can be adjusted
+
+    OV7670_write_register(0x11, 0xc0); //internal clock is external clock
+    OV7670_write_register(0x1e, 0x00); //vertical flip and mirror
+
+    OV7670_write_register(0x40, 0xd0); // 565 Output
+    
+    
+    //provided registers:
     OV7670_write_register(0x50, 0x80);
     OV7670_write_register(0x51, 0x00);
     OV7670_write_register(0x52, 0x22);
