@@ -61,6 +61,23 @@ This let us check the registers and as shown below, we were able to write them c
 
 ![Success!](https://i.imgur.com/fgq4QV8.png)
 
+### Setting additional registers
+After getting the initial framework going for setting registers, we added additional registers to be set from reading the camera's datasheet.  The following code was added with comments describing the intent of the registers.
+
+~~~
+    OV7670_write_register(0x12, 0x80); //COM7, reset registers, QCIF format, RGB
+    OV7670_write_register(0x12, 0x0e); //COM7, reset registers, QCIF format, RGB
+    OV7670_write_register(0x0c, 0x08); //COM3, enable scaling
+    OV7670_write_register(0x3e, 0x08); //COM14, scaling parameter can be adjusted
+    OV7670_write_register(0x14, 0x01); //COM9, automatic gain ceiling, freeze AGC/AEC
+    OV7670_write_register(0x40, 0xd0); //COM15, 565 Output
+    OV7670_write_register(0x42, 0x08); //COM17, color bar test
+    OV7670_write_register(0x11, 0xc0); //CLKRC, internal clock is external clock
+    OV7670_write_register(0x1e, 0x30); //vertical flip and mirror enabled 
+~~~
+
+After updating code, we confirmed that our registers were correct with the serial output and moved on.
+
 ### Data Structure for Sending/Receiving FPGA Information
 Next, we set up our data structure for how the FPGA would communicate what the camera sees to the Arduino, as diagrammed below.  We chose using 3 digital pins: the first two would represent the presence of a treasure and its shape, and the last bit would communicate the color of the treasure. 
 
