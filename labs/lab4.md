@@ -11,6 +11,25 @@
 * Detect basic shapes froma camera input
 * Send camera information to the Arduino
 
+## Prelab Questions
+1. Maximum size of buffer is total RAM, which is 594 Kbits, or 74250 bytes
+
+2. QCIF gives a screen size of 176 x 144 or 24768 pixels.  We plan to use RGB 565 since it retains the most information and we will downsample down to an 8 bit RGB 332 format
+
+3. We can read the most significant bits from the RGB565.  For example:
+
+RGB323[7:0] = {RGB565[15:13], RGB565[10:8], RGB565[4:3]};
+
+4. Since each pixel is stored in 8 bits (RGB323) and a frame contains 24768 pixels, we only nee 24768 bytes which can fit in the buffer 
+ 
+5. See the section below in which we discuss registers
+
+6.  
+* VSYNC is high after a frame has finished transmitting and signals the start of the next frame
+* HREF is high as a single row outputs data and drops low at the start of a new row
+* PCLK represents a new set of 8 bits of data output.  Two cycles of PCLK give a pixel as it contains 16 bits.
+
+7. We will be using parallel communication over 3 GPIO pins between the FPGA and the Arduino because it is easiest to implement.
 
 # Arduino Team
 
@@ -94,6 +113,113 @@ Using this structure, we can communicate all cases for the treasure:
 ![Voltage Divider](https://i1.wp.com/randomnerdtutorials.com/wp-content/uploads/2015/09/voltage-divider-circuit.png?resize=408%2C151&ssl=1)
 
 ### Code
+~~~
+#include <Wire.h>
+
+#define OV7670_I2C_ADDRESS 0x21 /*TODO: write this in hex (eg. 0xAB) */
+
+void set_color_matrix(){
+    Serial.println(OV7670_write_register(0x4f, 0x80));
+    
+    OV7670_write_register(0x12, 0x80); //COM7, reset registers, QCIF format, RGB
+    
+    OV7670_write_register(0x12, 0x0e); //COM7, reset registers, QCIF format, RGB
+    OV7670_write_register(0x0c, 0x08); //COM3, enable scaling
+    OV7670_write_register(0x3e, 0x08); //COM14, scaling parameter can be adjusted
+    OV7670_write_register(0x14, 0x01); //COM9, automatic gain ceiling, freeze AGC/AEC
+    OV7670_write_register(0x40, 0xd0); //COM15, 565 Output
+    OV7670_write_register(0x42, 0x08); //COM17, color bar test
+    OV7670_write_register(0x11, 0xc0); //CLKRC, internal clock is external clock
+    OV7670_write_register(0x1e, 0x30); //vertical flip and mirror disabled  
+    
+    //provided registers:
+    OV7670_write_register(0x50, 0x80);
+    OV7670_write_register(0x51, 0x00);
+    OV7670_write_register(0x52, 0x22);
+    OV7670_write_register(0x53, 0x5e);
+    OV7670_write_register(0x54, 0x80);
+    OV7670_write_register(0x56, 0x40);
+    OV7670_write_register(0x58, 0x9e);
+    OV7670_write_register(0x59, 0x88);
+    OV7670_write_register(0x5a, 0x88);
+    OV7670_write_register(0x5b, 0x44);
+    OV7670_write_register(0x5c, 0x67);
+    OV7670_write_register(0x5d, 0x49);
+    OV7670_write_register(0x5e, 0x0e);
+    OV7670_write_register(0x69, 0x00);
+    OV7670_write_register(0x6a, 0x40);
+    OV7670_write_register(0x6b, 0x0a);
+    OV7670_write_register(0x6c, 0x0a);
+    OV7670_write_register(0x6d, 0x55);
+    OV7670_write_register(0x6e, 0x11);
+    OV7670_write_register(0x6f, 0x9f);
+    OV7670_write_register(0xb0, 0x84);
+}
+
+
+///////// Main Program //////////////
+void setup() {
+  Wire.begin();
+  Serial.begin(9600);
+  
+  // TODO: READ KEY REGISTERS
+  
+  delay(100);
+  
+  // TODO: WRITE KEY REGISTERS
+  
+  //read_key_registers();
+
+  set_color_matrix();
+
+}
+
+void loop(){
+ }
+
+
+///////// Function Definition //////////////
+void read_key_registers(){
+  /*TODO: DEFINE THIS FUNCTION*/
+}
+
+byte read_register_value(int register_address){
+  byte data = 0;
+  Wire.beginTransmission(OV7670_I2C_ADDRESS);
+  Wire.write(register_address);
+  Wire.endTransmission();
+  Wire.requestFrom(OV7670_I2C_ADDRESS,1);
+  while(Wire.available()<1);
+  data = Wire.read();
+  return data;
+}
+
+String OV7670_write(int start, const byte *pData, int size){
+    int n,error;
+    Wire.beginTransmission(OV7670_I2C_ADDRESS);
+    n = Wire.write(start);
+    if(n != 1){
+      return "I2C ERROR WRITING START ADDRESS";   
+    }
+    n = Wire.write(pData, size);
+    if(n != size){
+      return "I2C ERROR WRITING DATA";
+    }
+    error = Wire.endTransmission(true);
+    if(error != 0){
+      return String(error);
+    }
+    
+    Serial.println(read_register_value(start)); //confirm that register was written correctly
+    
+    return "no errors :)";
+ }
+
+String OV7670_write_register(int reg_address, byte data){
+  return OV7670_write(reg_address, &data, 1);
+ }
+
+~~~
 
 # FPGA team
 
@@ -101,12 +227,13 @@ Marcela, Zoe, and Natan
 
 ### Materials Used:
 
-* DEO- Nano FPGA
+* DEO-Nano FPGA
 * VGA adapter and cord
+* Monitor
 
 ### Goals
 
-The goals for the FPGA team are to write test data into the board's embedded memory and connect it to the VGA driver, to display it on the computer monitor. 
+The goals for the FPGA team were to write test data into the board's embedded memory and connect it to the VGA driver, to display it on the computer monitor. 
 
 ### PLL
 
@@ -141,20 +268,238 @@ always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 	end
 end
 ```
-#### Pin setting on FPGA
-* GPIO_1 [27:20] is D[7:0] eight bits RGB input from camera, 
-* D[7:0] MSB is D[7] and LSB is D[0]
+
+We were able to play with the VGA output and hardcode our screen to display colors and patterns.  In our first test, we painted the whole screen red and in our second test, we threw in some if statements on the x position to get columns of different color.  Both of these are shown below:
+
+![VGA tests](https://snag.gy/JsWUvx.jpg)
+
+
+### Pin setting on FPGA
+Next we had to connect our data pins and clocks from the camera to the GPIO on the FPGA.  We connected our pins accordingly:
+
+* GPIO_1 [27:20] is D[7:0] eight bits RGB input from camera, D[7:0] MSB is D[7] and LSB is D[0]
 * PCLK is GPIO_1[28] 
 * HREF is GPIO_1[29] 
 * VSYNC is GPIO_1[30]
 
-#### downsampler 
-for each pixel, we downsize 16 bits RGB value to 8 bits per pixel, there are two clocks for the whole RGB value from camera so we take Red and Green from first clock and Blue from second clock. 
+### Downsampler 
+For each pixel, we need to downsize 16 bits RGB value to 8 bits per pixel.  There are two clock cycles we need to read for the whole RGB value from camera so we take Red and Green from first clock and Blue from second clock.  This is done simply by assigning:
+~~~
+//in first PCLK read the following:
+R <= {GPIO_1_D[27],GPIO_1_D[26], GPIO_1_D[25]}; //D[7:5]
+G <= {GPIO_1_D[22],GPIO_1_D[21], GPIO_1_D[20]}; //D[2:0]
 
-#### first pclk
-* Red=D[7:5]
-* Green=D[2:0]
+//in second PCLK read the following:
+B <= {GPIO_1_D[24],GPIO_1_D[23]}; //D[4:3]
 
-#### second pclk
-* Blue=D[4:3]
+//concatenate by:
+pixel_data_RGB332 <= {R, G, B};
+~~~
 
+### Reading the Clocks
+To read the data of the digital pins on the camera, we needed to coordinate our software with PCLK, HREF, and VSYNC.  To do this, we had an always block on the positive edge of PCLK.  If VSYNC was high, we would reset the buffer and start gathering data from the initial position again.  Otherwise, we would continue to read data normally.  To read, we would have to alternate BYTE_NUM between clock cycles because each pixel takes two PCLK cycles.  This was implemented by toggling BYTE_NUM each time a read was performed.  Lastly, we had to be aware of HREF.  If HREF is low, we cannot be reading and need to raise a flag that it is the next row.  These steps are highligted in the verilog code below:
+~~~
+always @(posedge GPIO_1_D[28]) begin // @posedge PCLK
+	if(GPIO_1_D[30]==1) begin
+		RESET = 1'b1;
+		BYTE_NUM=1'b0;
+		WRITE_ADDRESS = 0;
+		//W_EN = 0;
+	end
+	else if(GPIO_1_D[30]==0) begin
+		RESET = 1'b0;
+		if(GPIO_1_D[29] && BYTE_NUM==0) begin // if(HREF && BYTE_NUM==0)
+			R = {GPIO_1_D[27],GPIO_1_D[26], GPIO_1_D[25]}; //D[7:5]
+			G = {GPIO_1_D[22],GPIO_1_D[21], GPIO_1_D[20]}; //D[2:0]
+		end
+		if(GPIO_1_D[29] && BYTE_NUM==1) begin // if(HREF && BYTE_NUM==1)
+			B = {GPIO_1_D[24],GPIO_1_D[23]}; //D[4:3]
+		end
+		BYTE_NUM= ~BYTE_NUM;
+		WRITE_ADDRESS = WRITE_ADDRESS +1'd1;
+	end
+
+end
+~~~
+
+### Color Bar Testing
+To enable the color bar, we first had to set the appropriate registers on the camera as described in the Arduino section.  We had to play with some additional settings and registers to eventually get our colors showing up properly.  Using the colorbar also helped us tweak and debug our FPGA code to make sure it was running properly.  Our end display of the color bar looked like so:
+
+
+### Color Detection
+Though we made it pretty far in the lab, we encountered several problems which prevented us from finishing the lab to completion.  After our system was working as described above, our Arduino stopped being able to load to the registers on the camera.  We swapped components, wires, and even code and after debugging for over 25 hours over the past week, we were still unable to find out why our Arduino was not able to load properly.  We will try to work toward treasure detection moving forward but overall morale is quite low :(
+
+In the future, we plan to perform color and shape recognition by counting the average R value and B value of pixels on the screen and setting some thresholds for triggering treasure detection.  
+
+### Code
+
+~~~
+`define SCREEN_WIDTH 176
+`define SCREEN_HEIGHT 144
+
+///////* DON'T CHANGE THIS PART *///////
+module DE0_NANO(
+	CLOCK_50,
+	GPIO_0_D,
+	GPIO_1_D,
+	KEY
+);
+
+//=======================================================
+//  PARAMETER declarations
+//=======================================================
+localparam RED = 8'b111_000_00;
+localparam GREEN = 8'b000_111_00;
+localparam BLUE = 8'b000_000_11;
+
+//=======================================================
+//  PORT declarations
+//=======================================================
+
+//////////// CLOCK - DON'T NEED TO CHANGE THIS //////////
+input 		          		CLOCK_50;
+
+//////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
+output 		    [33:0]		GPIO_0_D;
+//////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
+input 		    [33:20]		GPIO_1_D;
+input 		     [1:0]		KEY;
+
+///// PIXEL DATA /////
+reg [7:0]	pixel_data_RGB332 = 8'b111_000_00;
+
+///// READ/WRITE ADDRESS /////
+reg [14:0] X_ADDR;
+reg [14:0] Y_ADDR;
+reg [14:0] WRITE_ADDRESS;
+reg [14:0] READ_ADDRESS; 
+
+//assign WRITE_ADDRESS = X_ADDR + Y_ADDR*(`SCREEN_WIDTH);
+//assign WRITE_ADDRESS = RESET? 0 : BYTE_NUM? (WRITE_ADDRESS) : WRITE_ADDRESS;
+
+
+
+///// VGA INPUTS/OUTPUTS /////
+wire 			VGA_RESET;
+wire [7:0]	VGA_COLOR_IN;
+wire [9:0]	VGA_PIXEL_X;
+wire [9:0]	VGA_PIXEL_Y;
+wire [7:0]	MEM_OUTPUT;
+wire			VGA_VSYNC_NEG;
+wire			VGA_HSYNC_NEG;
+reg			VGA_READ_MEM_EN;
+
+assign GPIO_0_D[5] = VGA_VSYNC_NEG;
+assign GPIO_0_D[2] = c0_24;
+assign VGA_RESET = ~KEY[0];
+
+///// I/O for Img Proc /////
+wire [8:0] RESULT;
+
+/* WRITE ENABLE */
+wire W_EN;
+assign W_EN = (WRITE_ADDRESS>74249)? 0: RESET? 0:1;
+
+///////* CREATE ANY LOCAL WIRES YOU NEED FOR YOUR PLL *///////
+wire c0_24;
+wire c1_25;
+wire c2_50;
+
+reg BYTE_NUM;
+reg RESET;
+reg R,G,B;
+
+
+///////* INSTANTIATE YOUR PLL HERE *///////
+PLL_Lab4	pll (
+	.inclk0 (CLOCK_50),
+	.c0 (c0_24), //Camera
+	.c1 (c1_25), //VGA
+	.c2 (c2_50)  
+	);
+	
+		assign GPIO_0_D[30] = c0_24;
+
+
+
+	///////* M9K Module *///////
+Dual_Port_RAM_M9K mem(
+	.input_data({R,G,B}),
+	.w_addr(WRITE_ADDRESS),
+	.r_addr(READ_ADDRESS),
+	.w_en(W_EN),
+	.clk_W(c2_50),
+	.clk_R(c1_25), // DO WE NEED TO READ SLOWER THAN WRITE??
+	.output_data(MEM_OUTPUT)
+);
+
+///////* VGA Module *///////
+VGA_DRIVER driver (
+	.RESET(VGA_RESET),
+	.CLOCK(c1_25),
+	.PIXEL_COLOR_IN(VGA_READ_MEM_EN ? MEM_OUTPUT : BLUE),
+	.PIXEL_X(VGA_PIXEL_X),
+	.PIXEL_Y(VGA_PIXEL_Y),
+	.PIXEL_COLOR_OUT({GPIO_0_D[9],GPIO_0_D[11],GPIO_0_D[13],GPIO_0_D[15],GPIO_0_D[17],GPIO_0_D[19],GPIO_0_D[21],GPIO_0_D[23]}),
+   .H_SYNC_NEG(GPIO_0_D[7]),
+   .V_SYNC_NEG(VGA_VSYNC_NEG)
+);
+
+///////* Image Processor *///////
+IMAGE_PROCESSOR proc(
+	.PIXEL_IN(MEM_OUTPUT),
+	.CLK(c1_25),
+	.VGA_PIXEL_X(VGA_PIXEL_X),
+	.VGA_PIXEL_Y(VGA_PIXEL_Y),
+	.VGA_VSYNC_NEG(VGA_VSYNC_NEG),
+	.RESULT(RESULT)
+);
+
+///////* Update Read Write Address *///////
+always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
+		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
+		//WRITE_ADDRESS = (1'd1 + VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
+		if(VGA_PIXEL_X>(`SCREEN_WIDTH-1) || VGA_PIXEL_Y>(`SCREEN_HEIGHT-1))begin
+				VGA_READ_MEM_EN = 1'b0;
+				//W_EN = 1'b0;
+		end
+		else begin
+				VGA_READ_MEM_EN = 1'b1;
+				//W_EN =  1'b1;
+		end
+end
+
+//always @(GPIO_1_D[30]) begin
+//	if(GPIO_1_D[30]==1'd1) begin
+//		RESET = 1'b1;
+//		BYTE_NUM=1'b0;
+//	end
+//	else if(GPIO_1_D[30]==1'd0) begin
+//		RESET = 1'b0;
+//	end
+//end
+
+always @(posedge GPIO_1_D[28]) begin // @posedge PCLK
+	if(GPIO_1_D[30]==1) begin
+		RESET = 1'b1;
+		BYTE_NUM=1'b0;
+		WRITE_ADDRESS = 0;
+		//W_EN = 0;
+	end
+	else if(GPIO_1_D[30]==0) begin
+		RESET = 1'b0;
+		if(GPIO_1_D[29] && BYTE_NUM==0) begin // if(HREF && BYTE_NUM==0)
+			R = {GPIO_1_D[27],GPIO_1_D[26], GPIO_1_D[25]}; //D[7:5]
+			G = {GPIO_1_D[22],GPIO_1_D[21], GPIO_1_D[20]}; //D[2:0]
+		end
+		if(GPIO_1_D[29] && BYTE_NUM==1) begin // if(HREF && BYTE_NUM==1)
+			B = {GPIO_1_D[24],GPIO_1_D[23]}; //D[4:3]
+		end
+		BYTE_NUM= ~BYTE_NUM;
+		WRITE_ADDRESS = WRITE_ADDRESS +1'd1;
+	end
+
+end
+	
+endmodule 
+~~~
