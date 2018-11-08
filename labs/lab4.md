@@ -245,16 +245,17 @@ To test the display, we assigned the WRITE_ADDRESS wire the value of READ_ADDRES
 
 #### Test WRITE_ADDRESS and RAM input data assignments
 
-```
+~~~
 assign WRITE_ADDRESS = 1'd1 + READ_ADDRESS;
-```
+~~~
 
-```///// PIXEL DATA /////
+~~~
+//////PIXEL DATA /////
 reg [7:0]	pixel_data_RGB332 = 8'b111_000_00;
-```
+~~~
 
 #### Setting W_EN
-```
+~~~
 ///////* Update Read Address and Write Enable *///////
 always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 	READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
@@ -267,7 +268,7 @@ always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
 		W_EN =  1'b1;
 	end
 end
-```
+~~~
 
 We were able to play with the VGA output and hardcode our screen to display colors and patterns.  In our first test, we painted the whole screen red and in our second test, we threw in some if statements on the x position to get columns of different color.  Both of these are shown below:
 
@@ -323,183 +324,22 @@ end
 ~~~
 
 ### Color Bar Testing
-To enable the color bar, we first had to set the appropriate registers on the camera as described in the Arduino section.  We had to play with some additional settings and registers to eventually get our colors showing up properly.  Using the colorbar also helped us tweak and debug our FPGA code to make sure it was running properly.  Our end display of the color bar looked like so:
+To enable the color bar, we first had to set the appropriate registers on the camera as described in the Arduino section.  We had to play with some additional settings and registers to eventually get our colors showing up properly.  Using the colorbar also helped us tweak and debug our FPGA code to make sure it was running properly.  One trouble we had was seemingly insecure wire connections. There seemed to be a lot of noise and we had to use our hands to push the pins into the sockets for a better output.  Our end display of the color bar looked like so:
 
+![Color Bar](https://snag.gy/T6ERPs.jpg)
+
+### Image Detection
+Adding the image after we got color bar workingg was not too difficult as all we had to do was simply comment the lines of code out that had to do with color bar.  We tested our images with the treasure markers and got results as shown below:
+ 
+![Image from camera](https://snag.gy/uyAN9F.jpg)
 
 ### Color Detection
-Though we made it pretty far in the lab, we encountered several problems which prevented us from finishing the lab to completion.  After our system was working as described above, our Arduino stopped being able to load to the registers on the camera.  We swapped components, wires, and even code and after debugging for over 25 hours over the past week, we were still unable to find out why our Arduino was not able to load properly.  We will try to work toward treasure detection moving forward but overall morale is quite low :(
+To detect color for the time being, we simply set thresholds for triggering red or blue.  These thresholds were built up to by recording the red values and blue values accumulating in every pixel.  If these accumulations surpassed the set threshold, the FPGA would send a signal to the Arduino.  We tweaked these threholds until our color recognition was working well and added some LEDs to our Arduino to display the readings.
 
-In the future, we plan to perform color and shape recognition by counting the average R value and B value of pixels on the screen and setting some thresholds for triggering treasure detection.  
+### Video
 
 ### Code
 
 ~~~
-`define SCREEN_WIDTH 176
-`define SCREEN_HEIGHT 144
 
-///////* DON'T CHANGE THIS PART *///////
-module DE0_NANO(
-	CLOCK_50,
-	GPIO_0_D,
-	GPIO_1_D,
-	KEY
-);
-
-//=======================================================
-//  PARAMETER declarations
-//=======================================================
-localparam RED = 8'b111_000_00;
-localparam GREEN = 8'b000_111_00;
-localparam BLUE = 8'b000_000_11;
-
-//=======================================================
-//  PORT declarations
-//=======================================================
-
-//////////// CLOCK - DON'T NEED TO CHANGE THIS //////////
-input 		          		CLOCK_50;
-
-//////////// GPIO_0, GPIO_0 connect to GPIO Default //////////
-output 		    [33:0]		GPIO_0_D;
-//////////// GPIO_0, GPIO_1 connect to GPIO Default //////////
-input 		    [33:20]		GPIO_1_D;
-input 		     [1:0]		KEY;
-
-///// PIXEL DATA /////
-reg [7:0]	pixel_data_RGB332 = 8'b111_000_00;
-
-///// READ/WRITE ADDRESS /////
-reg [14:0] X_ADDR;
-reg [14:0] Y_ADDR;
-reg [14:0] WRITE_ADDRESS;
-reg [14:0] READ_ADDRESS; 
-
-//assign WRITE_ADDRESS = X_ADDR + Y_ADDR*(`SCREEN_WIDTH);
-//assign WRITE_ADDRESS = RESET? 0 : BYTE_NUM? (WRITE_ADDRESS) : WRITE_ADDRESS;
-
-
-
-///// VGA INPUTS/OUTPUTS /////
-wire 			VGA_RESET;
-wire [7:0]	VGA_COLOR_IN;
-wire [9:0]	VGA_PIXEL_X;
-wire [9:0]	VGA_PIXEL_Y;
-wire [7:0]	MEM_OUTPUT;
-wire			VGA_VSYNC_NEG;
-wire			VGA_HSYNC_NEG;
-reg			VGA_READ_MEM_EN;
-
-assign GPIO_0_D[5] = VGA_VSYNC_NEG;
-assign GPIO_0_D[2] = c0_24;
-assign VGA_RESET = ~KEY[0];
-
-///// I/O for Img Proc /////
-wire [8:0] RESULT;
-
-/* WRITE ENABLE */
-wire W_EN;
-assign W_EN = (WRITE_ADDRESS>74249)? 0: RESET? 0:1;
-
-///////* CREATE ANY LOCAL WIRES YOU NEED FOR YOUR PLL *///////
-wire c0_24;
-wire c1_25;
-wire c2_50;
-
-reg BYTE_NUM;
-reg RESET;
-reg R,G,B;
-
-
-///////* INSTANTIATE YOUR PLL HERE *///////
-PLL_Lab4	pll (
-	.inclk0 (CLOCK_50),
-	.c0 (c0_24), //Camera
-	.c1 (c1_25), //VGA
-	.c2 (c2_50)  
-	);
-	
-		assign GPIO_0_D[30] = c0_24;
-
-
-
-	///////* M9K Module *///////
-Dual_Port_RAM_M9K mem(
-	.input_data({R,G,B}),
-	.w_addr(WRITE_ADDRESS),
-	.r_addr(READ_ADDRESS),
-	.w_en(W_EN),
-	.clk_W(c2_50),
-	.clk_R(c1_25), // DO WE NEED TO READ SLOWER THAN WRITE??
-	.output_data(MEM_OUTPUT)
-);
-
-///////* VGA Module *///////
-VGA_DRIVER driver (
-	.RESET(VGA_RESET),
-	.CLOCK(c1_25),
-	.PIXEL_COLOR_IN(VGA_READ_MEM_EN ? MEM_OUTPUT : BLUE),
-	.PIXEL_X(VGA_PIXEL_X),
-	.PIXEL_Y(VGA_PIXEL_Y),
-	.PIXEL_COLOR_OUT({GPIO_0_D[9],GPIO_0_D[11],GPIO_0_D[13],GPIO_0_D[15],GPIO_0_D[17],GPIO_0_D[19],GPIO_0_D[21],GPIO_0_D[23]}),
-   .H_SYNC_NEG(GPIO_0_D[7]),
-   .V_SYNC_NEG(VGA_VSYNC_NEG)
-);
-
-///////* Image Processor *///////
-IMAGE_PROCESSOR proc(
-	.PIXEL_IN(MEM_OUTPUT),
-	.CLK(c1_25),
-	.VGA_PIXEL_X(VGA_PIXEL_X),
-	.VGA_PIXEL_Y(VGA_PIXEL_Y),
-	.VGA_VSYNC_NEG(VGA_VSYNC_NEG),
-	.RESULT(RESULT)
-);
-
-///////* Update Read Write Address *///////
-always @ (VGA_PIXEL_X, VGA_PIXEL_Y) begin
-		READ_ADDRESS = (VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
-		//WRITE_ADDRESS = (1'd1 + VGA_PIXEL_X + VGA_PIXEL_Y*`SCREEN_WIDTH);
-		if(VGA_PIXEL_X>(`SCREEN_WIDTH-1) || VGA_PIXEL_Y>(`SCREEN_HEIGHT-1))begin
-				VGA_READ_MEM_EN = 1'b0;
-				//W_EN = 1'b0;
-		end
-		else begin
-				VGA_READ_MEM_EN = 1'b1;
-				//W_EN =  1'b1;
-		end
-end
-
-//always @(GPIO_1_D[30]) begin
-//	if(GPIO_1_D[30]==1'd1) begin
-//		RESET = 1'b1;
-//		BYTE_NUM=1'b0;
-//	end
-//	else if(GPIO_1_D[30]==1'd0) begin
-//		RESET = 1'b0;
-//	end
-//end
-
-always @(posedge GPIO_1_D[28]) begin // @posedge PCLK
-	if(GPIO_1_D[30]==1) begin
-		RESET = 1'b1;
-		BYTE_NUM=1'b0;
-		WRITE_ADDRESS = 0;
-		//W_EN = 0;
-	end
-	else if(GPIO_1_D[30]==0) begin
-		RESET = 1'b0;
-		if(GPIO_1_D[29] && BYTE_NUM==0) begin // if(HREF && BYTE_NUM==0)
-			R = {GPIO_1_D[27],GPIO_1_D[26], GPIO_1_D[25]}; //D[7:5]
-			G = {GPIO_1_D[22],GPIO_1_D[21], GPIO_1_D[20]}; //D[2:0]
-		end
-		if(GPIO_1_D[29] && BYTE_NUM==1) begin // if(HREF && BYTE_NUM==1)
-			B = {GPIO_1_D[24],GPIO_1_D[23]}; //D[4:3]
-		end
-		BYTE_NUM= ~BYTE_NUM;
-		WRITE_ADDRESS = WRITE_ADDRESS +1'd1;
-	end
-
-end
-	
-endmodule 
 ~~~
