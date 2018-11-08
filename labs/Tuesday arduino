@@ -34,12 +34,12 @@ void setup() {
   Serial.begin(9600);
 
   OV7670_write_register(0x12, 0x80); //COM7, reset registers, QCIF format, RGB
-  OV7670_write_register(0x12, 0x0e); //COM7, reset registers, QCIF format, RGB 0e
+  OV7670_write_register(0x12, 0x0c); //COM7, reset registers, QCIF format, RGB 0e
   OV7670_write_register(0x0c, 0x08); //COM3, enable scaling
   //OV7670_write_register(0x3e, 0x08); //COM14, scaling parameter can be adjusted
   //OV7670_write_register(0x14, 0x01); //COM9, automatic gain ceiling, freeze AGC/AEC
   OV7670_write_register(0x40, 0xd0); //COM15, 565 Output
-  OV7670_write_register(0x42, 0x0c); //COM17, color bar test 0C
+  OV7670_write_register(0x42, 0x00); //COM17, color bar test 0C
   OV7670_write_register(0x11, 0xc0); //CLKRC, internal clock is external clock
   OV7670_write_register(0x1e, 0x30); //vertical flip and mirror disabled  
   // TODO: READ KEY REGISTERS
@@ -48,12 +48,8 @@ void setup() {
   
   // TODO: WRITE KEY REGISTERS
   
-  //read_key_registers();
-//  Serial.println("read: ");
-//  read_register_value(0x59);
+
     set_color_matrix();
-//  Serial.println("read: ");
-    Serial.println(read_register_value(0x12));
 }
 
 void loop(){
@@ -70,16 +66,16 @@ byte read_register_value(int register_address){
   Wire.beginTransmission(0x21);
   Wire.write(register_address);
   Wire.endTransmission();
-  Wire.requestFrom(OV7670_I2C_ADDRESS,1);
+  Wire.requestFrom(0x21,1);
   while(Wire.available()<1);
   data = Wire.read();
   return data;
 }
 
-String OV7670_write(int a, const byte *pData, int size){
+String OV7670_write(int addresses, const byte *pData, int size){
     int n,error;
     Wire.beginTransmission(0x21);
-    n = Wire.write(a);
+    n = Wire.write(addresses);
     if(n != 1){
       return "I2C ERROR WRITING START ADDRESS";   
     }
@@ -93,7 +89,7 @@ String OV7670_write(int a, const byte *pData, int size){
     if(error != 0){
       return String(error);
     }
-    
+    Serial.println(read_register_value(addresses));
     return "no errors :)";
  }
 
