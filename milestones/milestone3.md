@@ -14,7 +14,7 @@ In graph format, we can follow the above rules and execute DFS such as the follo
 
 However in our tile format, it is a little bit more complex as backtracking and remembering your previous path complicates things.  To remember our path, we have a stack that pushes every square that we travel through.  When we backtrack, locations are popped off of the stack.  In addition, we also have to store 
 
-![DFS maze](https://snag.gy/oqmifY.jpg)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JFkDh5BSens" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Check Direction Function
 The first thing we added to the robot
