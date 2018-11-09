@@ -19,6 +19,38 @@ To operate, the robot first moves as far as it can with priority being straight 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/JFkDh5BSens" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Check Direction Function
-The first thing we added to the robot
+The first thing we added to the robot was functions to check the front, left, and right side of the robot.  The three functions simply return a boolean value: true if there is no wall in respective location and if respective location is unvisited, false otherwise.  These three functions can be used in going to the deepest depth of a path and for deciding if a branch can be further explored.  They are implemented as follows:
+
+~~~
+//returns false if front tile has wall or has been visited
+bool checkFront() {
+  if (frontWallValue > 50) return false; // wall
+  if (compass == 0 && visited[loc - 9] == 1) return false; //check north if facing north etc. etc. etc.
+  if (compass == 1 && visited[loc + 1] == 1) return false;
+  if (compass == 2 && visited[loc + 9] == 1) return false;
+  if (compass == 3 && visited[loc - 1] == 1) return false;
+  return true;
+}
+
+//returns false if left tile has wall or has been visited
+bool checkLeft() {
+  if (leftWallValue > 50) return false; // wall
+  if (compass == 0 && visited[loc - 1] == 1) return false; //check west if facing north etc. etc. etc.
+  if (compass == 1 && visited[loc - 9] == 1) return false;
+  if (compass == 2 && visited[loc + 1] == 1) return false;
+  if (compass == 3 && visited[loc + 9] == 1) return false;
+  return true;
+}
+
+//returns false if right tile has wall or has been visited
+bool checkRight() {
+  if (rightWallValue > 50) return false; // wall
+  if (compass == 0 && visited[loc + 1] == 1) return false; // check east if facing north etc. etc. etc.
+  if (compass == 1 && visited[loc + 9] == 1) return false;
+  if (compass == 2 && visited[loc - 1] == 1) return false;
+  if (compass == 3 && visited[loc - 9] == 1) return false;
+  return true;
+}
+~~~
 
 ###
