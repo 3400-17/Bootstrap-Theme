@@ -300,26 +300,41 @@ pixel_data_RGB332 <= {R, G, B};
 ### Reading the Clocks
 To read the data of the digital pins on the camera, we needed to coordinate our software with PCLK, HREF, and VSYNC.  To do this, we had an always block on the positive edge of PCLK.  If VSYNC was high, we would reset the buffer and start gathering data from the initial position again.  Otherwise, we would continue to read data normally.  To read, we would have to alternate BYTE_NUM between clock cycles because each pixel takes two PCLK cycles.  This was implemented by toggling BYTE_NUM each time a read was performed.  Lastly, we had to be aware of HREF.  If HREF is low, we cannot be reading and need to raise a flag that it is the next row.  These steps are highligted in the verilog code below:
 ~~~
-always @(posedge GPIO_1_D[28]) begin // @posedge PCLK
-	if(GPIO_1_D[30]==1) begin
-		RESET = 1'b1;
+always @(posedge PCLK) begin
+	if (VSYNC & ~VSYNC_PREV) begin 
 		BYTE_NUM=1'b0;
-		WRITE_ADDRESS = 0;
-		//W_EN = 0;
+		X_ADDR = 15'b0;
+		Y_ADDR = 15'b0;
 	end
-	else if(GPIO_1_D[30]==0) begin
-		RESET = 1'b0;
-		if(GPIO_1_D[29] && BYTE_NUM==0) begin // if(HREF && BYTE_NUM==0)
-			R = {GPIO_1_D[27],GPIO_1_D[26], GPIO_1_D[25]}; //D[7:5]
-			G = {GPIO_1_D[22],GPIO_1_D[21], GPIO_1_D[20]}; //D[2:0]
-		end
-		if(GPIO_1_D[29] && BYTE_NUM==1) begin // if(HREF && BYTE_NUM==1)
-			B = {GPIO_1_D[24],GPIO_1_D[23]}; //D[4:3]
-		end
-		BYTE_NUM= ~BYTE_NUM;
-		WRITE_ADDRESS = WRITE_ADDRESS +1'd1;
+	else if (~HREF & HREF_PREV) begin 
+		Y_ADDR = Y_ADDR + 1'd1;
+		X_ADDR = 15'b0;
+		BYTE_NUM=1'b0;
 	end
-
+	else begin
+		Y_ADDR = Y_ADDR;
+		if(HREF) begin
+			if(BYTE_NUM==1'b0) begin
+				W_EN = 1'b0;
+				BYTE_NUM = 1'b1;
+				TEMP[7:0] = CAM_INPUT; 
+				pixel_data_RGB332[7:5] = CAM_INPUT[3:1];
+				X_ADDR = X_ADDR;
+			end
+			else if (BYTE_NUM==1'b1) begin
+				TEMP[15:8] = CAM_INPUT;
+				pixel_data_RGB332 = {TEMP[15:13] , TEMP[11:9] , TEMP[3:2]};
+				BYTE_NUM = 1'b0;
+				X_ADDR = X_ADDR + 1'b1;
+				W_EN = 1'b1;
+			end
+		end
+		else begin
+			X_ADDR = 15'b0;
+		end
+	end
+	HREF_PREV = HREF;
+	VSYNC_PREV = VSYNC;
 end
 ~~~
 
@@ -334,8 +349,27 @@ Adding the image after we got color bar workingg was not too difficult as all we
 ![Image from camera](https://snag.gy/uyAN9F.jpg)
 
 ### Color Detection
-To detect color for the time being, we simply set thresholds for triggering red or blue.  These thresholds were built up to by recording the red values and blue values accumulating in every pixel.  If these accumulations surpassed the set threshold, the FPGA would send a signal to the Arduino.  We tweaked these thresholds until our color recognition was working well.  In order to communicate with the Arduino, we hooked up the output pins from the FPGA to digital input pins on the Arduino and added some LEDs to our Arduino's other digital pins to display if red or blue was read.  Our video and code displaying results can be found below.
-
+To detect color for the time being, we simply set thresholds for triggering red or blue.  These thresholds were built up to by recording the red values and blue values accumulating in every pixel.  If these accumulations surpassed the set threshold, the FPGA would send a signal to the Arduino.  We tweaked these thresholds until our color recognition was working well.  In order to communicate with the Arduino, we hooked up the output pins from the FPGA to digital input pins on the Arduino and added some LEDs to our Arduino's other digital pins to display if red or blue was read.  Our video and code displaying results can be found below. The Verilog code we used for color detection was based on code posted by another group on Piazza 
+~~~
+always @(posedge CLK) begin
+	if (HREF) begin
+		if (PIXEL_IN == 8'b0) begin countBLUE = countBLUE + 16'd1; end
+		else if (PIXEL_IN[7:5] > 3'b010) begin countRED = countRED + 16'b1; end
+		else begin countNULL = countNULL + 16'd1; end
+	end
+	if (VSYNC == 1'b1 && lastsync == 1'b0) begin //posedge VSYNC
+		if (countBLUE > B_CNT_THRESHOLD) begin RESULT = 3'b111; end
+		else if (countRED > R_CNT_THRESHOLD) begin RESULT = 3'b110; end
+		else begin RESULT = 3'b000; end
+	end
+	if (VSYNC == 1'b0 && lastsync == 1'b1) begin //negedge VSYNC
+		countBLUE = 16'b0;
+		countRED = 16'b0;
+		countNULL = 16'b0;
+	end
+	lastsync = VSYNC;
+end
+~~~
 Here is our additions to the Arduino code loop:
 ~~~
 if (digitalRead(4) == HIGH){ //Red signal
