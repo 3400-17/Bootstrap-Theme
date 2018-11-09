@@ -336,6 +336,18 @@ Adding the image after we got color bar workingg was not too difficult as all we
 ### Color Detection
 To detect color for the time being, we simply set thresholds for triggering red or blue.  These thresholds were built up to by recording the red values and blue values accumulating in every pixel.  If these accumulations surpassed the set threshold, the FPGA would send a signal to the Arduino.  We tweaked these thresholds until our color recognition was working well.  In order to communicate with the Arduino, we hooked up the output pins from the FPGA to digital input pins on the Arduino and added some LEDs to our Arduino's other digital pins to display if red or blue was read.  Our video and code displaying results can be found below.
 
+Here is our additions to the Arduino code loop:
+~~~
+if (digitalRead(4) == HIGH){ //Red signal
+    digitalWrite(2, HIGH); //Red LED
+  }else if (digitalRead(5) == HIGH){ //blue signal
+     digitalWrite(3, HIGH); //Blue LED
+  }else { //no signal
+    digitalWrite(2, LOW);
+    digitalWrite(3, LOW);
+  }
+~~~
+
 ### Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/sidr7YSD1bY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
