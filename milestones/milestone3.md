@@ -10,7 +10,7 @@
 We chose to start with depth first search (DFS) because it was the easiest to grasp and implement and we could build on it to make a more efficient algorithm moving forward.  To understand depth first search, we first drew out several diagrams to show what the robot would think.  DFS first explores one path fully from the root node, noting any alternative paths along the way.  When it hits a dead end, the robot backtracks back to an intersecion with a path branch in it and checks to see if any of the alternative paths are unexplored.  If so, it then seaerches the entire depth of that branch repeating the process again.  The robot continues this loop until there are no more alternative branches to explore. 
 
 In graph format, we can follow the above rules and execute DFS such as the following:
-![DFS Graph](https://snag.gy/rJ4hst.jpg)
+![DFS Graph, Source: HackerEarth](https://snag.gy/qMwF4m.jpg)
 
 However in our tile maze format, it is a little bit more complex as backtracking and remembering your previous path complicates things.  To remember our path, we have a stack that pushes every square that we travel through.  When we backtrack, locations are popped off of the stack.  In addition, we also have to store branches as we travel.  Branches are defined by squares that have multiple different directions that the robot can move in.  These branches are also stored in a stack such that we can  go back to the most recent branch by simply popping it and comparing it with the popped item from the travel stack.  
 
