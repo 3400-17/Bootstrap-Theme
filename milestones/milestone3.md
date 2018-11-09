@@ -175,7 +175,7 @@ void prevBranch() {
 }
 ~~~
 ### Loop
-With our subfunctions, our loop was actually pretty simple.  We ran depth first to start the robot off.  The remainder of the loop 
+With our subfunctions, our loop was actually pretty simple.  We ran depth first to start the robot off.  The remainder of the loop simply runs our backtracking function and then checks for unexplored paths on branches in a while loop until there are no more branches to explore.  When the robot finishes, it turn on an LED and stops moving.
 
 ~~~
 void loop() {
