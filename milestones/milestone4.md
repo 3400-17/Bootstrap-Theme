@@ -23,7 +23,7 @@ To get the camera to recognize different shapes, we first mounted it on the robo
 
 To fine tune our system, we played with the thresholds which set what "more blue" and "less blue" looked like and added a mirrored code for reading the red shapes.
 
-!(Shapes)[https://snag.gy/9ZPIOE.jpg]
+![Shapes](https://snag.gy/9ZPIOE.jpg)
 
 ### Video
 
