@@ -389,4 +389,17 @@ if (digitalRead(4) == HIGH){ //Red signal
 ### Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/sidr7YSD1bY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+### Registers used for Camera
+
+  OV7670_write_register(0x12 , 0x80); //reset
+  delay(100);
+  set_color_matrix();
+  OV7670_write_register(0x11 , 0xC0); //CLKRC
+  OV7670_write_register(0x1E , 0x30);  //for mirror and flip screen
+  OV7670_write_register(0x0C , 0X08);  //
+  OV7670_write_register(0x12 , 0x0C);  //COM7 
+  OV7670_write_register(0x40 , 0XF0);   //COM15
+  OV7670_write_register(0x42 , 0x00);  //
+  OV7670_write_register(0x8C , 0x02);  //RGB 444
+  OV7670_write_register(0x55, 0x00);
 
