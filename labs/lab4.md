@@ -112,28 +112,6 @@ Using this structure, we can communicate all cases for the treasure:
 
 ![Voltage Divider](https://i1.wp.com/randomnerdtutorials.com/wp-content/uploads/2015/09/voltage-divider-circuit.png?resize=408%2C151&ssl=1)
 
-### Code
-~~~
-#include <Wire.h>
-
-#define OV7670_I2C_ADDRESS 0x21 /*TODO: write this in hex (eg. 0xAB) */
-
-void set_color_matrix(){
-### Registers used for Camera
-
-  OV7670_write_register(0x12 , 0x80); //reset
-  delay(100);
-  set_color_matrix();
-  OV7670_write_register(0x11 , 0xC0);  //CLKRC, internal clock is external clock
-  OV7670_write_register(0x1E , 0x30);  //vertical flip and mirror disabled  
-  OV7670_write_register(0x0C , 0X08);  //COM3, enable scaling
-  OV7670_write_register(0x12 , 0x0e);  //COM7, reset registers, QCIF format, RGB
-  OV7670_write_register(0x40 , 0XF0);  //COM15
-  OV7670_write_register(0x42 , 0x00);  //COM17, color bar test
-  OV7670_write_register(0x8C , 0x02);  //RGB 444
-
-
-~~~
 
 # FPGA team
 
