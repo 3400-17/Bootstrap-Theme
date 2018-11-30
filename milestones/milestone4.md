@@ -7,11 +7,15 @@
 
 # Implementation
 
-### New Chasis
-To mount our FPGA and Camera, we lasercut a new wooden chasis, with the wheels hidden inside our structure.  The box design is also exactly 5.5 inches tall, allowing for the IR hat to be mounted at the right level.  
+### Mounting the Hardware
+To mount our FPGA and Camera, we lasercut a new wooden chasis, with the wheels hidden inside our structure.  The box design is also exactly 5.5 inches tall, allowing for the IR hat to be mounted at the right level.  The Camera has a slot that it fits in in the front of the robot with screw holes as well.  The FPGA fits on the edge of the box, next to one of the batteries.  The pins we need for image processing are exposed on the top and the power pins are exposed as well.  These additions are shown below:
+
+![mounting](https://snag.gy/TG87bP.jpg)
 
 ### Treasure Detection and Distinguishing Colors
-Working from our prior progress with lab 4, we improved our color detection by playing with the thresholds more and making a more clear image by rewiring our camera and playing more with seting of registers.  
+Working from our prior progress with lab 4, we improved our color detection by playing with the thresholds more and making a more clear image by rewiring our camera and playing more with seting of registers.  A video is shown below:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/oWXQA4cXbi8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Distinguishing Shapes
 To get the camera to recognize different shapes, we first mounted it on the robot such that the image would be at a consistent level.  If a red or blue treasure was recognized, the Verilog code we wrote would then run a segment to check the shape by checking two specific rows as indicated in the image below by the dotted lines.  Comparing the average color of the bottom row helped us determine the shape.
@@ -25,6 +29,5 @@ To fine tune our system, we played with the thresholds which set what "more blue
 
 ![Shapes](https://snag.gy/9ZPIOE.jpg)
 
-### Video
 
 ### Code
