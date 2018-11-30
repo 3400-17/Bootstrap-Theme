@@ -211,6 +211,9 @@ void loop() {
 This video is of our prototype for our chassis in acrylic.  The maze is still solved though.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Doj1n4cUl8s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+This video includes our GUI in it.  Unfortunately the new version of the GUI does not work on our computers so we had to use the old version which still has trouble updating consistently.  Regardless, our robot was able to correctly communicate the maze to the compuater.  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NCDlGhC8zqY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ### Full Code
 
 ~~~
