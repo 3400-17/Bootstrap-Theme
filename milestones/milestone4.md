@@ -17,6 +17,9 @@ Working from our prior progress with lab 4, we improved our color detection by p
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/oWXQA4cXbi8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+For testing purposes, we attached extra lights onto our system and connected it to the computer to program the FPGA.  Resultingly, the entire system did not fit into our box but our camera was still mounted properly.  This is shown below:
+![camera](https://snag.gy/rGZ8pC.jpg)
+
 ### Distinguishing Shapes
 To get the camera to recognize different shapes, we first mounted it on the robot such that the image would be at a consistent level.  If a red or blue treasure was recognized, the Verilog code we wrote would then run a segment to check the shape by checking two specific rows as indicated in the image below by the dotted lines.  Comparing the average color of the bottom row helped us determine the shape.
 
@@ -28,6 +31,8 @@ To get the camera to recognize different shapes, we first mounted it on the robo
 To fine tune our system, we played with the thresholds which set what "more blue" and "less blue" looked like and added a mirrored code for reading the red shapes.
 
 ![Shapes](https://snag.gy/9ZPIOE.jpg)
+
+Unfortunately, we were not able to get the full functionality working by today.  Our triangle code works decently but it proved difficult to fully get the recognition of the square and diamond.
 
 
 ### Code
