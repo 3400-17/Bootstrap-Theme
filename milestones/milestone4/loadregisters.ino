@@ -1,54 +1,5 @@
 #include <Wire.h>
 
- 
-
-#define OV7670_I2C_ADDRESS 0x21
-
-#define CLKRC 0x11
-
-#define COM3 0x0C
-
-#define COM7   0x12
-
-#define COM15 0x40
-
-#define COM17 0x42
-
-#define MVFP 0x1E
-
-#define RGB444 0x8C
-
-// Register definitions
-
-#define NUM_REGISTERS 7
-
-// Might not need noise one
-
-#define COM9   0x14
-
-#define BRIGHTNESS 0x55
-
- 
-
- 
-
- 
-
-//int KEY_REGISTERS[] = {RESET_COM7, // BIT 6 reserved
-
-//                        SCALING_COM3, // BIT 0,1,7 reserved
-
-//                        NOISE_COM9, // BIT 1,2,3,7 reserved
-
-//                        OUTPUTRANGE_COM15, // BIT 0,1,2,3 reserved
-
-//                        COLORBAR_COM17, // BIT 0,1,2,4,5 reserved
-
-//                        CLKRC_USEEXTCLK, // none reserved
-
-//                        MVFP_FLIP //BIT 0,1,3,6,7 reserved
-
-//                        };
 
  
 
@@ -69,36 +20,22 @@ void setup() {
   delay(100);
 
   set_color_matrix();
+    OV7670_write_register(0x12, 0x80); //COM7, reset registers, QCIF format, RGB
+    OV7670_write_register(0x12, 0x0e); //COM7, reset registers, QCIF format, RGB
+    /OV7670_write_register(0x0c, 0x08); //COM3, enable scaling
+    OV7670_write_register(0x3e, 0x08); //COM14, scaling parameter can be adjusted
+    OV7670_write_register(0x14, 0x01); //COM9, automatic gain ceiling, freeze AGC/AEC
+    OV7670_write_register(0x40, 0xd0); //COM15, 565 Output
+    OV7670_write_register(0x42, 0x0c); //COM17, color bar test c/0
+    OV7670_write_register(0x11, 0xc0); //CLKRC, internal clock is external clock
+    OV7670_write_register(0x1e, 0x30); //vertical flip and mirror enabled 
 
-  OV7670_write_register(CLKRC , 0xC0);
+   OV7670_write_register(0x8c , 0x02);
 
-  OV7670_write_register(MVFP , 0x30);
-
-  OV7670_write_register(COM3 , 0X08);
-
-  OV7670_write_register(COM7 , 0x0C);
-
-  OV7670_write_register(COM15 , 0Xd0);
-
-// OV7670_write_register(COM15 , 0b11010000);
-
-  //OV7670_write_register(COM17 , 0x0C);
-
-  OV7670_write_register(COM17 , 0x00);
-
- // OV7670_write_register(COM9 , 0x01);    // Noise COM9[0] = 1 <- Freeze AGC/AEC
-
-   OV7670_write_register(RGB444 , 0x02);
-
-   OV7670_write_register(BRIGHTNESS, 0x00);
-
-   Serial.println("Written!");
-
- 
-
+  //OV7670_write_register(0x01, 0x90);//adjust blue gain
+  //OV7670_write_register(0xBE, 0x90);//black level comp (blue)
+  //OV7670_write_register(0x55, 0x30);//brightness?
   read_key_registers();
-
-  Serial.println("READ!");
 
 }
 
@@ -116,173 +53,10 @@ void loop(){
 
 void write_key_registers(){
 
-  byte data;
-
- 
-
-  // COM 7
-
-  byte resolution      = 0b00001000; // Sets resolution
-
-  byte colorbar        = 0b00000010; // color bar
-
-  byte rgbformat       = 0b00000100; // RGB format enabled
-
-  byte reset_regs      = 0b10000000; // resets registers
-
- 
-
-  // COM 3
-
-  byte enable_scaling      = 0b00001000; // enables scaling
-
-  // COM 9
-
-  byte agcfreeze           = 0b00000001; // freezes agc
-
-  // COM 15
-
-  byte rgbformat555        = 0b11110000; // largest output range and RGB555 format
-
-  // COM 17
-
-  byte enablecolorbartest  = 0b00001000; // enable the color bar test
-
-  // CLKRC
-
-  byte enabledoubleclk     = 0b10000000; // enable double clock
-
-  byte useextclk           = 0b01000000; // use external clock
-
-  // MVFP
-
-  byte mirrorimage         = 0b00000000; // mirror image
-
- 
-
-//   data = reset_regs;
-
-//   OV7670_write_register(RESET_COM7, data); // initial register reset
-
-//      Serial.print("Data after resetting is " ); Serial.println(data);
-
-//   delay(500);
-
-//   data = (resolution | colorbar | rgbformat);
-
-//   Serial.print("Data is " ); Serial.println(data);
-
-//    OV7670_write_register(RESET_COM7, data); // initial register reset
-
- 
-
- 
-
-//  for (int i = 0; i < NUM_REGISTERS; i++) {
-
-//    data = read_register_value(KEY_REGISTERS[i]); // read original value of register
-
-//    if (i==0){
-
-//      data |= reset_regs; // resets registers
-
-//      OV7670_write_register(RESET_COM7, data); // initial register reset
-
-//      delay(100);    
-
-//      data = (read_register_value(KEY_REGISTERS[0]) | resolution | colorbar | rgbformat); // now always OR with default values
-
-//      OV7670_write_register(RESET_COM7, data); // sets resolution
-
-//    }
-
-//   
-
-//    else if (i== 1) {
-
-//       data |= enable_scaling; // enables scaling, note BIT7 is reserved
-
-//    }
-
-//    else if (i==2) data |= agcfreeze; // freezes AGC
-
-//    else if (i==3) data |= rgbformat555;
-
-//    else if (i==4) data |= enablecolorbartest;
-
-//    else if (i==5) data |= (data | enabledoubleclk | useextclk);
-
-//    else if (i==6) data |= mirrorimage;
-
-//    OV7670_write_register(KEY_REGISTERS[i], data);
-
- 
-
-  OV7670_write_register(0x12 , 0x80);
-
-  //delay(100); // ta told us to do this but it makes it worse
-
-  //color bar test/ RGB       - value of 4 sets RGB mode, 6 sets color bar and RGB
-
-  //OV7670_write_register(0x12 , 0x06);
-
-    //CLKRC for external clock
-
-  OV7670_write_register(0x11 , 0xC0);
-
-    //mvfp for mirror and flip screen
-
-  OV7670_write_register(0x1E , 0x30);
-
-  //Com3 for enable scaling
-
-  OV7670_write_register(0x0C , 0x08);
-
-  //COM7
-
-  OV7670_write_register(0x12 , 0x0C);
-
-  //com15 for RGB format
-
-  OV7670_write_register(0x40 , 0xF0);
-
- 
-
-//  //com17
-
-  OV7670_write_register(0x42 , 0x0C);
-
-    Serial.print(read_register_value(COM17), HEX);
-
- 
-
- 
-
- 
 
 }
 
 void read_key_registers(){ 
-
-  Serial.print("RESET_COM7 = ");  Serial.print(COM7, HEX); Serial.print(" ");Serial.println( read_register_value(COM7), HEX);
-
-  Serial.println("reset done");
-
-  Serial.print("SCALING_COM3 = "); Serial.print(COM3, HEX); Serial.print(" "); Serial.println(read_register_value(COM3), HEX);
-
-  Serial.print("NOISE_COM9 = ");  Serial.print(COM9, HEX); Serial.print(" ");Serial.println(read_register_value(COM9), HEX);
-
-  Serial.print("OUTPUTRANGE_COM15 = ");  Serial.print(COM15, HEX); Serial.print(" ");Serial.println(read_register_value(COM15), HEX);
-
-  Serial.print("COLORBAR_COM17 = ");  Serial.print(COM17, HEX); Serial.print(" ");Serial.println(read_register_value(COM17), HEX);
-
-  Serial.print("CLKRC_USEEXTCLK = "); Serial.print(CLKRC, HEX); Serial.print(" "); Serial.println(read_register_value(CLKRC), HEX);
-
-  Serial.print("MVFP_FLIP = "); Serial.print(MVFP, HEX); Serial.print(" "); Serial.println(read_register_value(MVFP), HEX);
-
-  Serial.print("RGB444 = "); Serial.print(RGB444, HEX); Serial.print(" "); Serial.println(read_register_value(RGB444), HEX);
-
-  Serial.print("BRIGHTNESS = "); Serial.print(BRIGHTNESS, HEX); Serial.print(" "); Serial.println(read_register_value(BRIGHTNESS), HEX);
 
 }
 
