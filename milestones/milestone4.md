@@ -123,7 +123,7 @@ To get the camera to recognize different shapes, we first mounted it on the robo
 * Else, if none of these cases, then the treasure registers as a false read and does not send a signal to the Arduino to avoid losing points.
 
 To fine tune our system, we played with the thresholds which set what "more blue" and "less blue" looked like and added a mirrored code for reading the red shapes.
-~~~
+
 
 
 ![Shapes](https://snag.gy/9ZPIOE.jpg)
