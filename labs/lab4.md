@@ -45,7 +45,10 @@ The goals for the Arduino team are wiring the camera, setting up its registers w
 
 [Hardware connections](https://snag.gy/nLMzXN.jpg)
 
-### Setting up 24 MHz clock and PLL
+### Setting up 24 MHz 
+
+
+and PLL
 The first thing we implemented was the 24 MHz clock using the PLL introduction in the lab description.  After initializing the PLL and inserting the module into the main block of code, we connected the 50 MHz clock into the input of the module, and connected a wire from the 24 MHz output to GPIO pin 6.  Following the hardware spec sheet, we were able to find the according pin on the FPGA and measure the output from the clock signal, as shown below.  By doing this, we were able to confirm the 24 MHz signal.
 
 ![24 MHz clock output](https://i.imgur.com/Fbc30YR.png)
@@ -196,7 +199,7 @@ To read the data of the digital pins on the camera, we needed to coordinate our 
 
 To read, we would have to alternate BYTE_NUM between clock cycles because each pixel takes two PCLK cycles. This was implemented by toggling BYTE_NUM each time a read was performed.  Lastly, we had to be aware of HREF.  If HREF is low, we cannot be reading and need to raise a flag that it is the next row.  These steps are highligted in the verilog code below:
 
-![state diagram](https://snag.gy/W5ghze.jpg)
+![state diagram](https://snag.gy/BNMVfk.jpg)
 
 ~~~
 always@(posedge VSYNC, negedge HREF) begin
