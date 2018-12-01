@@ -195,6 +195,7 @@ pixel_data_RGB332 <= {R, G, B};
 To read the data of the digital pins on the camera, we needed to coordinate our software with PCLK, HREF, and VSYNC. VSYNC determines the refreshing frame and HREF determines the coloum number. If VSYNC is at posedge or HREF negaedge, we reset the number of rows to be zero. Otherwise, we would continue to count row number. 
 
 To read, we would have to alternate BYTE_NUM between clock cycles because each pixel takes two PCLK cycles. This was implemented by toggling BYTE_NUM each time a read was performed.  Lastly, we had to be aware of HREF.  If HREF is low, we cannot be reading and need to raise a flag that it is the next row.  These steps are highligted in the verilog code below:
+![state diagram](https://snag.gy/W5ghze.jpg)
 ~~~
 always@(posedge VSYNC, negedge HREF) begin
 	if(VSYNC) begin //new frame
@@ -277,14 +278,7 @@ if (digitalRead(4) == HIGH){ //Red signal
     digitalWrite(3, LOW);
   }
 ~~~
-for the arduino/FPGA communication we decide to use the following binary number:
-	000: red triangle
-	001: red square
-	010: red diamond
-	100: blue triangle
-	101: blue square
-	110: blue diamond
-	x11: Nothing
+
 	
 ### Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/sidr7YSD1bY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
