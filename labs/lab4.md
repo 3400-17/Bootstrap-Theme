@@ -277,7 +277,15 @@ if (digitalRead(4) == HIGH){ //Red signal
     digitalWrite(3, LOW);
   }
 ~~~
-
+for the arduino/FPGA communication we decide to use the following binary number:
+	000: red triangle
+	001: red square
+	010: red diamond
+	100: blue triangle
+	101: blue square
+	110: blue diamond
+	x11: Nothing
+	
 ### Video
 <iframe width="560" height="315" src="https://www.youtube.com/embed/sidr7YSD1bY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
