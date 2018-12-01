@@ -124,7 +124,31 @@ To get the camera to recognize different shapes, we first mounted it on the robo
 
 To fine tune our system, we played with the thresholds which set what "more blue" and "less blue" looked like and added a mirrored code for reading the red shapes.
 
-
+#### here is how we detect blue lines
+~~~ 
+if ( VGA_PIXEL_Y == 6'd42) begin
+				BLUE_LINE_0 = BLUE_LINE_0 + 1'b1;
+				end
+			if ( VGA_PIXEL_Y == 7'd72) begin
+				BLUE_LINE_1 = BLUE_LINE_1 + 1'b1;
+				end
+			if ( VGA_PIXEL_Y == 7'd102) begin
+				BLUE_LINE_2 = BLUE_LINE_2 + 1'b1;
+				end
+~~~
+#### here is how we detect red lines
+~~~
+			if ( VGA_PIXEL_Y == 6'd42) begin
+				RED_LINE_0 = RED_LINE_0 + 1'b1;
+				end
+			if ( VGA_PIXEL_Y == 7'd72) begin
+				RED_LINE_1 = RED_LINE_1 + 1'b1;
+				end
+			if ( VGA_PIXEL_Y == 7'd102) begin
+				RED_LINE_2 = RED_LINE_2 + 1'b1;
+				end
+		end 
+~~~
 
 ![Shapes](https://snag.gy/9ZPIOE.jpg)
 
