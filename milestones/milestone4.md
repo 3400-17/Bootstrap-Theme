@@ -160,7 +160,8 @@ end
 
 One issue we ran into was inconsistencies in the location and depth of the shape.  This meant that sometimes the shape was very large and close to the camera and other times it was further away and much smaller, making thresholding difficult.  To fix this, we planned to do edge detection.  At the beginning of each row, the FPGA would recognize the first colored pixel and the last colored pixel.  Comparing the distances, the threshold would be scaled appropriately in order to have a accurate recognition of the shape.  
 
-Unfortunately, we were not able to get the full functionality working by today.  Our triangle code works decently but it proved difficult to fully get the recognition of the square and diamond.
+We were actually able to collaborate with some of the other teams in making our color and shape detection work well.  We worked especially close with members of team 24 and together created a pretty robust solution for our color detection.
+
 
 ### Video
 
