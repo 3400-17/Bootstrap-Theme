@@ -46,6 +46,9 @@ else begin
 	end 
 end
 ~~~
+
+![segemtation](https://snag.gy/8RINtG.jpg)
+![color image](https://snag.gy/cFvpR8.jpg)
 #### this is to count color of frames each ten frames
 ~~~
 
