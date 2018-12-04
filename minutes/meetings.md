@@ -250,6 +250,6 @@ Everyone
 Michael, Natan, Siming, Marcela
 ### Minutes
 * Practice competition.
-* Agreed to go to open lab to keep working on camera and reintegrate IR & radio/GUI transimission.
+* Team agreed to go to open lab to keep working on camera and reintegrate IR & radio/GUI transimission.
 * Discussed ethics HW.
-* Decided robot paint color. Robot was painted black and tentatively named BlackBox.
+* Decided robot paint color. Robot was painted black in open lab and tentatively named BlackBox.
