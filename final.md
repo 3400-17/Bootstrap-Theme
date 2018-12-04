@@ -562,4 +562,16 @@ Detecting robots was one thing but being able to decide what to do in the presen
 In the end we instead chose to implement a function that would periodically check for the presence of another robot.  If a robot is detected, our robot stops.  If the robot is still there after 5.5 seconds, our robot will then turn around and retreat back to the last branch to continue exploring.
 
 ## Competition Day
-Our robot was pretty successful in competition.  Despite not having treasure detection implemented, this was not a huge issue because so many other teams were in the same boat.  Our mechanical design and hardware on our robot looked really good and it proved to be pretty robust.
+Our robot was pretty successful in competition.  Despite not having treasure detection implemented, this was not a huge issue because so many other teams were in the same boat.  Our mechanical design and hardware on our robot looked really good and it proved to be pretty robust with jostling and bumps.  
+
+Our first run was an unfortunate failure as our thresholds for the line sensors were off and we were not able to properly reprogram them in the following few minutes.  This was probably due to the inconsistent lines (dirty, different shades) and also the different lighting conditions in Duffield atrium.  As a result, our robot was only able to move forward a couple blocks, but was able to map the blocks well.  
+
+After our first run, we went upstairs to grab a practice mat and spent 30 minutes recalibrating all of our sensors with the new lighting.  After doing this, our robot operated much better, able to turn and stay on the line.
+
+Our second run went much better.  We actually thought about our DFS algorithm and noticed it would be a quicker traverse using right hand wall following.  Resultingly, we switched our strategy to a right hand wall following maze traversal and everything went pretty smoothly.  As seen in the video, our robot explored about 75% of the maze and even successfully detected other robots.  Just like we programmed it to, it first waited for 5 seconds and if the robot was still there, we turned around and kept going.  The one pitfall was when other robots were ramming into walls in the far corner, it messed up our wall detection which then threw off our position.  We believe that if the walls were more secure or if there were less interference from other robots/people we could have mapped that portion of the maze much better.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Pir-Ls_bBfk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Overall, we were pretty satisfied with our performance throughout the class and we are ultimately proud of our robot. 
+
+![](https://snag.gy/4pcDog.jpg)
