@@ -155,3 +155,101 @@ Everyone
 * talked through updates
 * need to finish radio
 * updated web page
+
+# Meeting 16
+## Date: Wednesday Oct. 24, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Got IR detection and microphone circuits working on a single protoboard.
+* Started Arduino and FPGA labs in two subteams.
+** FPGA got hardcoding from memory onto VGA display working by end of lab.
+** Arduino team got inital register values written to camera properly.
+** Agreed to come to open lab later to continue.
+
+# Meeting 17
+## Date: Friday Oct. 26, Upson 146, 11:15a-12:05p
+### Attendance
+Everyone
+### Minutes
+* Michael got into Kessler!!
+* Deadline for Lab 4 extended; talked about what was left for us to do for it.
+
+# Meeting 18
+## Date: Wednesday Oct. 31, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Kept working on Lab 4.
+
+# Meeting 19
+## Date: Friday Nov. 2, Upson 146, 11:15a-12:05p
+### Attendance
+Everyone
+### Minutes
+* Agreed to come to afternoon open lab to continue Lab 4.
+
+# Meeting 20
+## Date: Wednesday Nov. 7, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Talked about website being featured in lecture!
+* FPGA team took over working on Lab 4: got colorbar test and camera output displayed on monitor but colors were off.
+* Lab 4's Arduino team went on to work on DFS for Milestone 3.
+
+# Meeting 21
+## Date: Friday Nov. 9, Upson 146, 11:15a-12:05p
+### Attendance
+Michael, Siming, Marcela
+### Minutes
+* Talked about robot design.
+
+# Meeting 22
+## Date: Wednesday Nov. 14, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Kept working on Milestone 3 and started M4.
+
+# Meeting 23
+## Date: Friday Nov. 16, Upson 146, 11:15a-12:05p
+### Attendance
+None. Meeting cancelled.
+### Minutes
+* Agreed over chat to meet later and over weekend for open lab.
+* Robot got upgraded to acrylic chassis over the weekend.
+
+# Meeting 24
+## Date: Wednesday Nov. 21, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Kept working on Milestone 3 and 4:
+** Got DFS working on small maze.
+
+# Meeting 25
+## Date: Friday Nov. 23, Upson 146, 11:15a-12:05p
+### Attendance
+Everyone
+### Minutes
+* Talked about new laser-cut wood chassis.
+* Agreed to keep going to open lab.
+
+# Meeting 26
+## Date: Wednesday Nov. 28, Phillips 3400 Lab, 7:30-10:30 pm 
+### Attendance
+Everyone
+### Minutes
+* Worked on camera: color and shape detection; image still had significant noise but color detection was somewhat succesful.
+* Talked about availability for open lab.
+
+# Meeting 27
+## Date: Friday Nov. 30, Upson 146, 11:15a-12:05p
+### Attendance
+Michael, Natan, Siming, Marcela
+### Minutes
+* Practice competition.
+* Agreed to go to open lab to keep working on camera and reintegrate IR & radio/GUI transimission.
+* Discussed ethics HW.
+* Decided robot paint color. Robot was painted black and tentatively named BlackBox.
