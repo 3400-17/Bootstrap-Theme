@@ -1,8 +1,8 @@
 ## topics:
-  1.Forier Transform
-  2.Fast Fourier Transform
-  3.Analog-to-digital cocnverter
-  4.Nyquist-Shannon sampling theorem
+  1. Forier Transform
+  2. Fast Fourier Transform
+  3. Analog-to-digital cocnverter
+  4. Nyquist-Shannon sampling theorem
 
 ## Fourier Transform
 
