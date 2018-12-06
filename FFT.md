@@ -22,5 +22,5 @@ we split X(k) into two groups according to k when k=odd and k=even.
 ![FFT](https://snag.gy/V5CnTe.jpg)
 ![FFT](https://snag.gy/pN9okd.jpg)
 
-
+### Here is a good video on youtube about FFT
 <iframe width="560" height="315" src="https://www.youtube.com/embed/EsJGuI7e_ZQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
