@@ -46,6 +46,41 @@ In addition, we also made a protoboard for the camera, solifying the connections
 
 ![camera](https://snag.gy/DPOCFn.jpg)
 
+#### Cost
+
+| Item                | Unit Cost | Quantity | Total Cost |
+|---------------------|-----------|----------|------------|
+| Line Sensors        | $3        | 2        | $6         |
+| Wall Sensors        | $7        | 3        | $21        |
+| Camera              | $14       | 1        | $14        |
+| Parallax Servos     | $13       | 2        | $26        |
+| Arduino Uno         | $16       | 1        | $16        |  
+| Roller Ball Bearing | $3        | 1        | $3         |
+| LED Strip           | $2        | 1        | $2         |
+| Protoboard          | $3        | 2        | $6         | 
+| LM 358 Op Amp       | $0.16     | 2        | $0.32      |
+| Multiplexer         | $0.26     | 1        | $0.26      |
+| Phototransistor     | $1        | 1        | $1         |
+| Electret Microphone | $1        | 1        | $1         |
+| NRF24L01+ Radio     | $3	  | 1        | $3	  |
+|                     |           |          | $99.58     |
+
+#### Software overview:
+* setupRadio(): initializes NRF24L01 radio, run on setup
+* acoustic(): returns true if 660 Hz tone is heard
+* optical(): returns true if robot is detected
+* transmit(): transmits a package containing location, walls, treasures
+* still(): stop moving
+* forward(): move forward with both wheels high while also checking for another robot. If another robot is detected, the robot stands still for 5 seconds while constantly running optical() and if it is continuously there, our robot will turn around
+* turnRight() & turnLeft(): turn 90 degrees and updae the compass
+* turnAround(): turns left twice
+* coast(): uses line following and forward() function to travel from intersection to intersection.  Also updates location
+* checkFront(), checkLeft(), checkRight(): used for DFS in checking walls and if visited
+* depth(): travels in priority of forward, right, then left until robot reaches a dead end
+* checkBranch(): determines if a branch has any unexplored paths leading off of it
+* prevBranch(): pops last branch location from branch stack and traverses back to it folloing its steps
+
+
 ## Line Following
 One of our first tasks was implementing line following using the line sensors provided in lab.  To test the sensors, we started off using the Arduino example code sketch AnalogRead.ino.  This gave us insight on the differences in reading between a black surface and white surface.  With this threshold in mind, we looked closely at an effective algorithm.  We only utilized two line sensors due to simplicity and functionality.  
 
