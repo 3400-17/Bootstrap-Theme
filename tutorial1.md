@@ -16,7 +16,6 @@ This picutre is a sigal in timme domain. It's clear that the singal is made up b
 Thrid row represent the signal in time domain and fourth row is the Fourier Transform of the signal. After Fourier Transform, the signal is represented with magnitude of frequency agasint frequency magnitude. The y-axis means how much a certain frequency we have for the signal. 
 
 ![Fourier Transform equation](https://snag.gy/mvLkcq.jpg)
-![Fourier Transform equation](https://snag.gy/ztr38Y.jpg)
 
 There are N mutiplies and N-1 addition so the operation is O(N^2) so is there any cheaper way to do fourier transform?
 
