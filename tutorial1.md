@@ -17,7 +17,6 @@ Thrid row represent the signal in time domain and fourth row is the Fourier Tran
 
 ![Fourier Transform equation](https://snag.gy/mvLkcq.jpg)
 ![Fourier Transform equation](https://snag.gy/ztr38Y.jpg)
-![Fourier Transform equation](https://snag.gy/eICDVZ.jpg)
 
 There are N mutiplies and N-1 addition so the operation is O(N^2) so is there any cheaper way to do fourier transform?
 
