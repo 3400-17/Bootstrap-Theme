@@ -65,6 +65,8 @@ In addition, we also made a protoboard for the camera, solifying the connections
 | NRF24L01+ Radio     | $3	  | 1        | $3	  |
 |                     |           |          | $99.58     |
 
+Note that the FPGA and Lasercut wood were not accounted for in the cost breakdown
+
 #### Software overview:
 * setupRadio(): initializes NRF24L01 radio, run on setup
 * acoustic(): returns true if 660 Hz tone is heard
